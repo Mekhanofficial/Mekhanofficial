@@ -319,13 +319,13 @@ const techStack = [
               </h2>
 
               <p className="text-base md:text-lg text-zinc-700 dark:text-zinc-300">
-                I'm Melvin Okievor, a 22-year-old Italian Freelance Front-end
-                developer. I'm a weird guy who likes making weird things with
-                web technologies. I like to resolve design problems, create
-                smart user interface and imagine useful interaction, developing
-                rich web experiences & web applications. When not working or
-                futzing around with code, I study how to escape from University.
-                Actually for hire.
+                I&apos;m Melvin Okievor, a 22-year-old Italian Freelance
+                Front-end developer. I&apos;m a weird guy who likes making weird
+                things with web technologies. I like to resolve design problems,
+                create smart user interface and imagine useful interaction,
+                developing rich web experiences & web applications. When not
+                working or futzing around with code, I study how to escape from
+                University. Actually for hire.
               </p>
 
               {/* Tech Stack */}
