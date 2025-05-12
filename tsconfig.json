@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     "components/layout/Layout.tsx",
     "components/sections/About.jsx"
-  ],
+, "components/sections/Hero.jsx", "components/sections/Projects.tsx"  ],
   "exclude": ["node_modules"]
 }
