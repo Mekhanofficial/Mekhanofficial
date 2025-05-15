@@ -269,8 +269,8 @@ export default function Hero() {
         onClick={toggleMusic}
         className={`fixed bottom-4 right-2 sm:right-4 z-50 p-2 sm:p-3 rounded-full transition-all duration-300 ${
           musicPlaying
-            ? "text-blue-500 bg-white/10 backdrop-blur-sm"
-            : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+            ? "text-blue-500  backdrop-blur-sm"
+            : "text-zinc-500 hover:text-blue-700 dark:hover:text-blue-300"
         }`}
         aria-label={musicPlaying ? "Turn music off" : "Turn music on"}
       >
@@ -284,14 +284,14 @@ export default function Hero() {
       <div className="relative w-full h-full pt-12 sm:pt-16 md:pt-20">
         {/* Left Panel - Empty */}
         <div
-          className={`absolute top-0 left-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-900/90 z-20 transition-transform duration-700 ease-in-out ${
+          className={`absolute top-0 left-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-950/20 z-20 transition-transform duration-700 ease-in-out ${
             isOpen ? "-translate-x-full" : "translate-x-0"
           }`}
         />
 
         {/* Right Panel - Animated Title */}
         <div
-          className={`absolute top-0 right-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-900/90 flex items-center justify-start pl-4 sm:pl-6 md:pl-10 z-20 transition-transform duration-700 ease-in-out ${
+          className={`absolute top-0 right-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-950/20 flex items-center justify-start pl-4 sm:pl-6 md:pl-10 z-20 transition-transform duration-700 ease-in-out ${
             isOpen ? "translate-x-full" : "translate-x-0"
           }`}
         >
@@ -411,10 +411,9 @@ export default function Hero() {
                       priority
                     />
                   </div>
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="text-white text-xs sm:text-sm font-medium bg-black/50 px-2 sm:px-3 py-1 rounded-full">
-                      View Profile
-                    </span>
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    {/* <span className="text-white text-xs sm:text-sm font-medium bg-black/50 px-2 sm:px-3 py-1 rounded-full">
+                    </span> */}
                   </div>
                 </div>
               </div>
@@ -460,3 +459,4 @@ export default function Hero() {
     </div>
   );
 }
+

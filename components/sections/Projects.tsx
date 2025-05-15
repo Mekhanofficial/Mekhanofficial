@@ -7,7 +7,7 @@ import Link from "next/link";
 const Projects = () => {
   const projects = [
     {
-      image: "/images/dark.jpg",
+      image: "/images/bg1.jpg",
       title: "The Mealsgraffiti",
       description: "Chawleen things",
       link: "https://www.themealsgraffiti.com",
@@ -17,12 +17,11 @@ const Projects = () => {
           "JavaScript, styles, optimization and frontend engineering",
         builtWith: "Built in H-ART for Elica",
       },
-      bgColor: "bg-amber-100",
-      darkBgColor: "dark:bg-amber-900",
       bgChar: "M",
+      charColor: "text-red-500", // Unique color for M
     },
     {
-      image: "/images/dark1.jpg",
+      image: "/images/bg2.jpg",
       title: "Flowstate",
       description: "Chawleen things",
       link: "https://www.themealsgraffiti.com",
@@ -32,12 +31,11 @@ const Projects = () => {
           "JavaScript, styles, optimization and frontend engineering",
         builtWith: "Built in H-ART for Elica",
       },
-      bgColor: "bg-blue-100",
-      darkBgColor: "dark:bg-blue-900",
       bgChar: "F",
+      charColor: "text-blue-500", // Unique color for F
     },
     {
-      image: "/images/dark4.jpg",
+      image: "/images/bg4.jpg",
       title: "Flowstate",
       description: "Chawleen things",
       link: "https://www.themealsgraffiti.com",
@@ -47,12 +45,11 @@ const Projects = () => {
           "JavaScript, styles, optimization and frontend engineering",
         builtWith: "Built in H-ART for Elica",
       },
-      bgColor: "bg-green-100",
-      darkBgColor: "dark:bg-green-900",
       bgChar: "P",
+      charColor: "text-green-500", // Unique color for P
     },
     {
-      image: "/images/dark3.jpg",
+      image: "/images/bg3.jpg",
       title: "Flowstate",
       description: "Chawleen things",
       link: "https://www.themealsgraffiti.com",
@@ -62,14 +59,13 @@ const Projects = () => {
           "JavaScript, styles, optimization and frontend engineering",
         builtWith: "Built in H-ART for Elica",
       },
-      bgColor: "bg-purple-100",
-      darkBgColor: "dark:bg-purple-900",
       bgChar: "W",
+      charColor: "text-purple-500", // Unique color for W
     },
   ];
 
   return (
-    <section className="w-full pb-20 bg-white dark:bg-gray-900">
+    <section className="w-full pb-20 bg-white dark:bg-black">
       <div className="space-y-0">
         {projects.map((item, index) => {
           const isEven = index % 2 === 0;
@@ -86,7 +82,7 @@ const Projects = () => {
                 }`}
               >
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0"
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0 grayscale"
                   style={{ backgroundImage: `url(${item.image})` }}
                 ></div>
                 <div className="relative z-10 flex justify-center items-center h-full p-4">
@@ -95,7 +91,7 @@ const Projects = () => {
                     alt="Mockup"
                     width={300}
                     height={300}
-                    className="object-contain"
+                    className="object-contain grayscale"
                     priority={index === 0}
                   />
                 </div>
@@ -103,30 +99,28 @@ const Projects = () => {
 
               {/* Details section - alternates sides based on index */}
               <div
-                className={`hidden md:block w-full md:w-1/2 p-8 flex-col justify-center ${
-                  item.bgColor
-                } ${
-                  item.darkBgColor
-                } z-10 sticky top-0 h-[500px] overflow-hidden ${
+                className={`hidden md:block w-full md:w-1/2 p-8 flex-col justify-center bg-gray-100 dark:bg-zinc-950 z-10 sticky top-0 h-[500px] overflow-hidden ${
                   isEven ? "md:order-2" : "md:order-1"
                 }`}
               >
-                {/* Background character */}
+                {/* Background character with unique color */}
                 <div className="absolute -right-20 -bottom-20">
-                  <span className="text-[500px] font-bold opacity-10 dark:opacity-20 pointer-events-none select-none">
+                  <span
+                    className={`text-[500px] font-bold opacity-20 dark:opacity-10 pointer-events-none select-none ${item.charColor}`}
+                  >
                     {item.bgChar}
                   </span>
                 </div>
 
                 <div className="max-w-md mx-auto relative z-20">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                     {item.title}
                   </h2>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
                     {item.description}
                   </p>
                   <div className="mb-3">
-                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-400">
+                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-500">
                       Technologies
                     </h4>
                     <p className="text-gray-800 dark:text-gray-200">
@@ -134,7 +128,7 @@ const Projects = () => {
                     </p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-400">
+                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-500">
                       Built With
                     </h4>
                     <p className="text-gray-800 dark:text-gray-200">
@@ -143,7 +137,7 @@ const Projects = () => {
                   </div>
                   <Link
                     href={item.link}
-                    className="mt-6 inline-block text-blue-500 hover:underline"
+                    className="mt-6 inline-block text-gray-700 dark:text-gray-300 hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -155,7 +149,7 @@ const Projects = () => {
               {/* Mobile: Simple link */}
               <Link
                 href={item.link}
-                className="md:hidden absolute inset-0 z-20 flex items-center justify-center bg-black/50"
+                className="md:hidden absolute inset-0 z-20 flex items-center justify-center bg-black/70"
                 target="_blank"
                 rel="noopener noreferrer"
               >

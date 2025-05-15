@@ -37,7 +37,7 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-3 px-4 sm:px-6 lg:px-8 bg-zinc-200/90 dark:bg-zinc-900/90 backdrop-blur-sm  transition-colors duration-200 h-16">
+    <header className="fixed top-0 left-0 right-0 z-50 py-3 px-4 sm:px-6 lg:px-8 bg-zinc-200/90 dark:bg-zinc-950/10 backdrop-blur-sm  transition-colors duration-200 h-16">
       <div className="container mx-auto flex justify-between items-center h-full">
         <Link
           href="/"
@@ -81,15 +81,15 @@ export default function Header() {
             aria-label="Toggle theme"
           >
             {/* Extended Rope */}
-            <div className="absolute top-0 w-px h-full bg-gradient-to-b from-amber-600 to-amber-500 animate-swing origin-top" />
+            <div className="absolute top-0 w-px h-full bg-gradient-to-b from-blue-600 to-blue-500 animate-swing origin-top" />
 
             {/* Light Bulb */}
-            <div className="absolute bottom-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-md bg-amber-50 dark:bg-zinc-800 animate-swing-child">
+            <div className="absolute bottom-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-md bg-amber-50 dark:bg-zinc-800 animate-swing-child">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 transition-all duration-300 ${
+                className={`h-5 w-5 transition-all duration-300 ${
                   theme === "light"
-                    ? "text-amber-500 rotate-0"
+                    ? "text-amber-500 rotate-180"
                     : "text-zinc-500 rotate-180 opacity-80"
                 }`}
                 viewBox="0 0 20 20"
