@@ -1,165 +1,313 @@
-"use client"; // Must be at the very top
+"use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+
+interface Project {
+  image: string;
+  title: string;
+  description: string;
+  link: string;
+  mockup: string;
+  projectDetails: {
+    technologies: string;
+    builtWith: string;
+    role: string;
+  };
+  bgChar: string;
+  charColor: string;
+  accentColor: string;
+}
 
 const Projects = () => {
-  const projects = [
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    } else {
+      controls.start("hidden");
+    }
+  }, [controls, inView]);
+
+  const projects: Project[] = [
     {
       image: "/images/bg1.jpg",
       title: "The Mealsgraffiti",
-      description: "Chawleen things",
+      description:
+        "A culinary experience platform showcasing gourmet recipes and chef collaborations.",
       link: "https://www.themealsgraffiti.com",
       mockup: "/images/ft1.png",
       projectDetails: {
         technologies:
-          "JavaScript, styles, optimization and frontend engineering",
-        builtWith: "Built in H-ART for Elica",
+          "React, Next.js, Tailwind CSS, GSAP animations, Contentful CMS",
+        builtWith: "Developed at H-ART for Elica's global marketing campaign",
+        role: "Lead Frontend Developer",
       },
       bgChar: "M",
-      charColor: "text-red-500", // Unique color for M
+      charColor: "text-red-500",
+      accentColor: "bg-red-500/20",
     },
     {
       image: "/images/bg2.jpg",
       title: "Flowstate",
-      description: "Chawleen things",
-      link: "https://www.themealsgraffiti.com",
+      description:
+        "A productivity app designed to help users achieve deep focus and workflow optimization.",
+      link: "https://www.flowstate-app.com",
       mockup: "/images/ft2.png",
       projectDetails: {
-        technologies:
-          "JavaScript, styles, optimization and frontend engineering",
-        builtWith: "Built in H-ART for Elica",
+        technologies: "TypeScript, Next.js, Framer Motion, Firebase",
+        builtWith: "Built in collaboration with behavioral psychologists",
+        role: "Full-stack Developer",
       },
       bgChar: "F",
-      charColor: "text-blue-500", // Unique color for F
+      charColor: "text-blue-500",
+      accentColor: "bg-blue-500/20",
     },
     {
       image: "/images/bg4.jpg",
-      title: "Flowstate",
-      description: "Chawleen things",
-      link: "https://www.themealsgraffiti.com",
+      title: "Polaris Design System",
+      description:
+        "Comprehensive design system for enterprise applications with 50+ reusable components.",
+      link: "https://www.polaris-design.io",
       mockup: "/images/ft3.png",
       projectDetails: {
-        technologies:
-          "JavaScript, styles, optimization and frontend engineering",
-        builtWith: "Built in H-ART for Elica",
+        technologies: "Storybook, React, CSS Modules, Design Tokens",
+        builtWith: "Created for Fortune 500 client's internal products",
+        role: "UI Architect",
       },
       bgChar: "P",
-      charColor: "text-green-500", // Unique color for P
+      charColor: "text-green-500",
+      accentColor: "bg-green-500/20",
     },
     {
       image: "/images/bg3.jpg",
-      title: "Flowstate",
-      description: "Chawleen things",
-      link: "https://www.themealsgraffiti.com",
+      title: "Wanderlust VR",
+      description:
+        "Virtual reality travel experiences with 360° destinations and cultural immersion.",
+      link: "https://www.wanderlust-vr.com",
       mockup: "/images/ft4.png",
       projectDetails: {
-        technologies:
-          "JavaScript, styles, optimization and frontend engineering",
-        builtWith: "Built in H-ART for Elica",
+        technologies: "Three.js, WebXR, Node.js, WebGL",
+        builtWith: "Pioneering project for next-gen travel technology",
+        role: "WebXR Developer",
       },
       bgChar: "W",
-      charColor: "text-purple-500", // Unique color for W
+      charColor: "text-purple-500",
+      accentColor: "bg-purple-500/20",
     },
   ];
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.15,
+        duration: 0.8,
+        ease: [0.16, 0.77, 0.47, 0.97],
+      },
+    }),
+  };
+
   return (
-    <section className="w-full pb-20 bg-white dark:bg-black">
-      <div className="space-y-0">
-        {projects.map((item, index) => {
-          const isEven = index % 2 === 0;
+    <section
+      id="projects"
+      className="w-full pb-20 bg-white dark:bg-zinc-950"
+      ref={ref}
+    >
+      <div className="mx-auto">
+        <motion.div initial="hidden" animate={controls} className="space-y-0">
+          {projects.map((item, index) => {
+            const isEven = index % 2 === 0;
 
-          return (
-            <div
-              key={index}
-              className="flex flex-col md:flex-row items-stretch overflow-hidden relative min-h-[400px] shadow-lg group"
-            >
-              {/* Image section - alternates sides based on index */}
-              <div
-                className={`w-full md:w-1/2 relative min-h-[400px] md:min-h-[500px] ${
-                  isEven ? "md:order-1" : "md:order-2"
-                }`}
+            return (
+              <motion.div
+                key={index}
+                custom={index}
+                variants={itemVariants}
+                className="flex flex-col md:flex-row items-stretch overflow-hidden relative min-h-[400px] shadow-lg group"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
               >
+                {/* Image section */}
                 <div
-                  className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0 grayscale"
-                  style={{ backgroundImage: `url(${item.image})` }}
-                ></div>
-                <div className="relative z-10 flex justify-center items-center h-full p-4">
-                  <Image
-                    src={item.mockup}
-                    alt="Mockup"
-                    width={300}
-                    height={300}
-                    className="object-contain grayscale"
-                    priority={index === 0}
-                  />
-                </div>
-              </div>
-
-              {/* Details section - alternates sides based on index */}
-              <div
-                className={`hidden md:block w-full md:w-1/2 p-8 flex-col justify-center bg-gray-100 dark:bg-zinc-950 z-10 sticky top-0 h-[500px] overflow-hidden ${
-                  isEven ? "md:order-2" : "md:order-1"
-                }`}
-              >
-                {/* Background character with unique color */}
-                <div className="absolute -right-20 -bottom-20">
-                  <span
-                    className={`text-[500px] font-bold opacity-20 dark:opacity-10 pointer-events-none select-none ${item.charColor}`}
-                  >
-                    {item.bgChar}
-                  </span>
-                </div>
-
-                <div className="max-w-md mx-auto relative z-20">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                    {item.title}
-                  </h2>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4">
-                    {item.description}
-                  </p>
-                  <div className="mb-3">
-                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-500">
-                      Technologies
-                    </h4>
-                    <p className="text-gray-800 dark:text-gray-200">
-                      {item.projectDetails.technologies}
-                    </p>
+                  className={`w-full md:w-1/2 relative min-h-[400px] md:min-h-[500px] ${
+                    isEven ? "md:order-1" : "md:order-2"
+                  } ${item.accentColor} transition-all duration-700`}
+                >
+                  <div
+                    className={`absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0 transition-all duration-1000 ${
+                      hoveredIndex === index
+                        ? "grayscale-0 scale-105"
+                        : "grayscale"
+                    }`}
+                    style={{ backgroundImage: `url(${item.image})` }}
+                  ></div>
+                  <div className="relative z-10 flex justify-center items-center h-full p-4">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 10,
+                      }}
+                    >
+                      <Image
+                        src={item.mockup}
+                        alt={`${item.title} mockup`}
+                        width={300}
+                        height={300}
+                        className={`object-contain transition-all duration-700 ${
+                          hoveredIndex === index ? "grayscale-0" : "grayscale"
+                        }`}
+                        priority={index === 0}
+                      />
+                    </motion.div>
                   </div>
-                  <div>
-                    <h4 className="text-sm font-semibold uppercase text-gray-600 dark:text-gray-500">
-                      Built With
-                    </h4>
-                    <p className="text-gray-800 dark:text-gray-200">
-                      {item.projectDetails.builtWith}
-                    </p>
-                  </div>
-                  <Link
-                    href={item.link}
-                    className="mt-6 inline-block text-gray-700 dark:text-gray-300 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visit Project →
-                  </Link>
                 </div>
-              </div>
 
-              {/* Mobile: Simple link */}
-              <Link
-                href={item.link}
-                className="md:hidden absolute inset-0 z-20 flex items-center justify-center bg-black/70"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="text-white text-xl font-bold">
-                  {item.title}
-                </span>
-              </Link>
-            </div>
-          );
-        })}
+                {/* Details section */}
+                <div
+                  className={`hidden md:block w-full md:w-1/2 p-8 flex-col justify-center bg-gray-50 dark:bg-zinc-900 z-10 sticky top-0 h-[500px] overflow-hidden ${
+                    isEven ? "md:order-2" : "md:order-1"
+                  }`}
+                >
+                  {/* Background character */}
+                  <motion.div
+                    className="absolute -right-20 -bottom-20"
+                    animate={{
+                      opacity: hoveredIndex === index ? 0.2 : 0.1,
+                      scale: hoveredIndex === index ? 1.1 : 1,
+                    }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <span
+                      className={`text-[500px] font-bold pointer-events-none select-none ${item.charColor}`}
+                    >
+                      {item.bgChar}
+                    </span>
+                  </motion.div>
+
+                  <div className="max-w-md mx-auto relative z-20">
+                    <motion.div
+                      initial={{ opacity: 0, x: isEven ? 50 : -50 }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                        transition: { delay: 0.3 },
+                      }}
+                    >
+                      <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                        {item.title}
+                      </h2>
+                      <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
+                        {item.description}
+                      </p>
+
+                      <div className="space-y-4 mb-6">
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">
+                            My Role
+                          </h4>
+                          <p className="text-gray-800 dark:text-gray-200">
+                            {item.projectDetails.role}
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">
+                            Technologies
+                          </h4>
+                          <p className="text-gray-800 dark:text-gray-200">
+                            {item.projectDetails.technologies}
+                          </p>
+                        </div>
+
+                        <div>
+                          <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">
+                            Context
+                          </h4>
+                          <p className="text-gray-800 dark:text-gray-200">
+                            {item.projectDetails.builtWith}
+                          </p>
+                        </div>
+                      </div>
+
+                      <motion.div whileHover={{ x: 5 }}>
+                        <Link
+                          href={item.link}
+                          className={`mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full border ${
+                            hoveredIndex === index
+                              ? `${item.charColor} border-current`
+                              : "text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700"
+                          } transition-colors duration-300`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>View Project</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </motion.div>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Mobile version */}
+                <Link
+                  href={item.link}
+                  className="md:hidden absolute inset-0 z-20 flex flex-col justify-end p-6 bg-gradient-to-t from-black/90 via-black/70 to-transparent"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="space-y-2">
+                    <h2 className="text-2xl font-bold text-white">
+                      {item.title}
+                    </h2>
+                    <p className="text-gray-300">{item.description}</p>
+                    <div className="flex items-center gap-2 text-white/80">
+                      <span>View Project</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );
