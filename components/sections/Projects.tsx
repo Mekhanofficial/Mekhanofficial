@@ -57,7 +57,7 @@ const Projects = () => {
       accentColor: "bg-red-500/20",
     },
     {
-      image: "/images/bg2.jpg",
+      image: "/images/dark1.jpg",
       title: "Flowstate",
       description:
         "A productivity app designed to help users achieve deep focus and workflow optimization.",
@@ -73,7 +73,7 @@ const Projects = () => {
       accentColor: "bg-blue-500/20",
     },
     {
-      image: "/images/bg4.jpg",
+      image: "/images/bg7.jpeg",
       title: "Polaris Design System",
       description:
         "Comprehensive design system for enterprise applications with 50+ reusable components.",
@@ -89,7 +89,7 @@ const Projects = () => {
       accentColor: "bg-green-500/20",
     },
     {
-      image: "/images/bg3.jpg",
+      image: "/images/bg8.jpg",
       title: "Wanderlust VR",
       description:
         "Virtual reality travel experiences with 360° destinations and cultural immersion.",
