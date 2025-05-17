@@ -45,7 +45,7 @@ const Projects = () => {
       description:
         "A sleek restaurant website where users can explore meals and place orders directly through WhatsApp.",
       link: "https://www.themealsgraffiti.com",
-      mockup: "/images/ft2.png",
+      mockup: "/images/ff1.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Personal branding project for food service engagement",
@@ -60,8 +60,8 @@ const Projects = () => {
       title: "Flowstate",
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
-      link: "https://flowstate-delta.vercel.app",
-      mockup: "/images/ft4.png",
+      link: "https://flowstate-omega.vercel.app",
+      mockup: "/images/ff3.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Designed as a personal blog for showcasing writing",
@@ -76,8 +76,8 @@ const Projects = () => {
       title: "MatchFit Clothing",
       description:
         "An e-commerce clothing site with gender-based filtering, cart, and wishlist functionality.",
-      link: "#", // Replace with live site if available
-      mockup: "/images/ft1.png",
+      link: "https://matchfit.vercel.app", // Replace with live site if available
+      mockup: "/images/ff4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Developed for fashion commerce with product filtering",
@@ -92,8 +92,8 @@ const Projects = () => {
       title: "Koin Fu",
       description:
         "A crypto trading dashboard for tracking market prices, trading pairs, and portfolio stats.",
-      link: "#", // Replace with live site if available
-      mockup: "/images/ft3.png",
+      link: "elitebitx.vercel.app", // Replace with live site if available
+      mockup: "/images/ff3.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Built as a crypto trading platform UI prototype",
@@ -162,8 +162,8 @@ const Projects = () => {
                       <Image
                         src={item.mockup}
                         alt={`${item.title} mockup`}
-                        width={300}
-                        height={300}
+                        width={350}
+                        height={350}
                         className={`object-contain transition-all duration-700 grayscale ${
                           hoveredIndex === index ? "grayscale-0" : ""
                         }`}
