@@ -56,7 +56,7 @@ const Projects = () => {
       accentColor: "bg-red-500/20",
     },
     {
-      image: "/images/bgg1.jpg",
+      image: "/images/bgg3.jpg",
       title: "Flowstate",
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
@@ -145,10 +145,8 @@ const Projects = () => {
                   } ${item.accentColor} transition-all duration-700`}
                 >
                   <div
-                    className={`absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0 transition-all duration-1000 ${
-                      hoveredIndex === index
-                        ? "grayscale-0 scale-105"
-                        : "grayscale"
+                    className={`absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed z-0 transition-all duration-1000 grayscale ${
+                      hoveredIndex === index ? "grayscale-0 scale-105" : ""
                     }`}
                     style={{ backgroundImage: `url(${item.image})` }}
                   ></div>
@@ -166,8 +164,8 @@ const Projects = () => {
                         alt={`${item.title} mockup`}
                         width={300}
                         height={300}
-                        className={`object-contain transition-all duration-700 ${
-                          hoveredIndex === index ? "grayscale-0" : "grayscale"
+                        className={`object-contain transition-all duration-700 grayscale ${
+                          hoveredIndex === index ? "grayscale-0" : ""
                         }`}
                         priority={index === 0}
                       />
