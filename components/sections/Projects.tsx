@@ -40,44 +40,12 @@ const Projects = () => {
 
   const projects: Project[] = [
     {
-      image: "/images/bgg4.jpg",
-      title: "The Mealsgraffiti",
-      description:
-        "A sleek restaurant website where users can explore meals and place orders directly through WhatsApp.",
-      link: "https://www.themealsgraffiti.com",
-      mockup: "/images/ff1.png",
-      projectDetails: {
-        technologies: "React, Tailwind CSS, JavaScript",
-        builtWith: "Personal branding project for food service engagement",
-        role: "Frontend Developer",
-      },
-      bgChar: "M",
-      charColor: "text-red-500",
-      accentColor: "bg-red-500/20",
-    },
-    {
-      image: "/images/bgg3.jpg",
-      title: "Flowstate",
-      description:
-        "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
-      link: "https://flowstate-omega.vercel.app",
-      mockup: "/images/ff3.png",
-      projectDetails: {
-        technologies: "React, Tailwind CSS, JavaScript",
-        builtWith: "Designed as a personal blog for showcasing writing",
-        role: "Frontend Developer",
-      },
-      bgChar: "F",
-      charColor: "text-blue-500",
-      accentColor: "bg-blue-500/20",
-    },
-    {
       image: "/images/bgg2.jpeg",
       title: "MatchFit Clothing",
       description:
         "An e-commerce clothing site with gender-based filtering, cart, and wishlist functionality.",
       link: "https://matchfit.vercel.app", // Replace with live site if available
-      mockup: "/images/ff4.png",
+      mockup: "/images/pro1.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Developed for fashion commerce with product filtering",
@@ -89,11 +57,44 @@ const Projects = () => {
     },
     {
       image: "/images/bgg3.jpg",
+      title: "Another",
+      description:
+        "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
+      link: "https://flowstate-omega.vercel.app",
+      mockup: "/images/pro2.png",
+      projectDetails: {
+        technologies: "React, Tailwind CSS, JavaScript",
+        builtWith: "Designed as a personal blog for showcasing writing",
+        role: "Frontend Developer",
+      },
+      bgChar: "A",
+      charColor: "text-blue-500",
+      accentColor: "bg-blue-500/20",
+    },
+    {
+      image: "/images/bgg4.jpg",
+      title: "The Mealsgraffiti",
+      description:
+        "A sleek restaurant website where users can explore meals and place orders directly through WhatsApp.",
+      link: "https://www.themealsgraffiti.com",
+      mockup: "/images/pro3.png",
+      projectDetails: {
+        technologies: "React, Tailwind CSS, JavaScript",
+        builtWith: "Personal branding project for food service engagement",
+        role: "Frontend Developer",
+      },
+      bgChar: "M",
+      charColor: "text-red-500",
+      accentColor: "bg-red-500/20",
+    },
+
+    {
+      image: "/images/bgg3.jpg",
       title: "Koin Fu",
       description:
         "A crypto trading dashboard for tracking market prices, trading pairs, and portfolio stats.",
       link: "elitebitx.vercel.app", // Replace with live site if available
-      mockup: "/images/ff3.png",
+      mockup: "/images/pro4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Built as a crypto trading platform UI prototype",

@@ -89,7 +89,7 @@ export default function Header() {
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-5 w-5 transition-all duration-300 ${
                   theme === "light"
-                    ? "text-amber-500 rotate-180"
+                    ? "text-blue-500 rotate-180"
                     : "text-zinc-500 rotate-180 opacity-80"
                 }`}
                 viewBox="0 0 20 20"
