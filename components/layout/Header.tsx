@@ -237,16 +237,16 @@ export default function Header() {
                         </h4>
                         <div className="flex flex-col gap-1">
                           <a
-                            href="mailto:hello@example.com"
+                            href="mailto:melvinokievor@gmail.com"
                             className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
                           >
-                            hello@example.com
+                            melvinokievor@gmail.com{" "}
                           </a>
                           <a
                             href="tel:+1234567890"
                             className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
                           >
-                            +1 (234) 567-890
+                            +234 (906) 081-6260
                           </a>
                         </div>
                       </div>
