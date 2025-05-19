@@ -21,7 +21,7 @@ export default function Footer() {
             You can see more awesome projects on LinkedIn.
           </p>
           <Link
-            href="https://www.linkedin.com/in/your-profile"
+            href="https://www.linkedin.com/in/mekhano"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
