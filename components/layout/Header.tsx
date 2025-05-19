@@ -243,7 +243,7 @@ export default function Header() {
                             melvinokievor@gmail.com{" "}
                           </a>
                           <a
-                            href="tel:+1234567890"
+                            href="tel: +2349060816260"
                             className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
                           >
                             +234 (906) 081-6260
