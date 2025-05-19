@@ -13,7 +13,7 @@ export default function Footer() {
     <footer className="relative min-h-[50vh] py-8 px-4 md:px-8 text-center bg-gradient-to-b from-primary-light to-gray-300 text-gray-800 dark:from-primary-dark dark:to-black dark:text-white">
       <div className="max-w-4xl mx-auto">
         <p className="text-2xl md:text-3xl font-bold mb-6">
-          That's <span className="line-through">not</span> all folks!
+          That&apos;s <span className="line-through">not</span> all folks!
         </p>
 
         <div className="mb-6">

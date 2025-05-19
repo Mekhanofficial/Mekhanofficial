@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "next-themes";
 import { FiMusic, FiChevronDown, FiX } from "react-icons/fi";
 import {
@@ -20,29 +20,39 @@ import {
 } from "react-icons/si";
 import Image from "next/image";
 
+type SocialLink = {
+  icon: React.ReactNode;
+  name: string;
+  url: string;
+};
+
+type TechItem = {
+  icon: React.ReactNode;
+  name: string;
+};
+
 export default function Hero() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [typingText, setTypingText] = useState("");
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-  const audioRef = useRef(null);
   const [audioReady, setAudioReady] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
-  const musicRef = useRef(null);
-  const contentRef = useRef(null);
-  const buttonRef = useRef(null);
-  const topRowRef = useRef(null);
-  const bottomRowRef = useRef(null);
   const [scrolled, setScrolled] = useState(false);
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const musicRef = useRef<HTMLAudioElement | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const socialLinks = [
+  const socialLinks: SocialLink[] = [
     {
       icon: <SiGithub className="w-4 h-4" />,
       name: "GitHub",
       url: "https://github.com",
     },
- 
+    // Add other social links here
   ];
 
   const roles = [
@@ -53,42 +63,23 @@ export default function Hero() {
     "CODE WHISPERER",
   ];
 
-  const techStack = [
+  const techStack: TechItem[] = [
     { icon: <SiReact className="w-5 h-5 sm:w-6 sm:h-6" />, name: "React" },
-    {
-      icon: <SiNextdotjs className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Next.js",
-    },
-    {
-      icon: <SiJavascript className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "JavaScript",
-    },
+    { icon: <SiNextdotjs className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Next.js" },
+    { icon: <SiJavascript className="w-5 h-5 sm:w-6 sm:h-6" />, name: "JavaScript" },
     { icon: <SiHtml5 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "HTML5" },
     { icon: <SiCss3 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "CSS3" },
-    {
-      icon: <SiTailwindcss className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Tailwind",
-    },
+    { icon: <SiTailwindcss className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Tailwind" },
     { icon: <SiVuedotjs className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Vue.js" },
-    {
-      icon: <SiBootstrap className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Bootstrap",
-    },
-    {
-      icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Firebase",
-    },
+    { icon: <SiBootstrap className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Bootstrap" },
+    { icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Firebase" },
     { icon: <SiGit className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Git" },
   ];
 
   // Handle scroll event
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -99,7 +90,7 @@ export default function Hero() {
   useEffect(() => {
     setMounted(true);
     let charIndex = 0;
-    let currentRole = roles[currentRoleIndex];
+    const currentRole = roles[currentRoleIndex];
     const typingInterval = setInterval(() => {
       if (charIndex <= currentRole.length) {
         setTypingText(currentRole.substring(0, charIndex));
@@ -113,7 +104,7 @@ export default function Hero() {
     }, 100);
 
     return () => clearInterval(typingInterval);
-  }, [currentRoleIndex]);
+  }, [currentRoleIndex, roles]);
 
   // Audio effects initialization
   useEffect(() => {
@@ -122,15 +113,8 @@ export default function Hero() {
         const audio = new Audio("/sound/click.wav");
         audio.volume = 0.3;
         audioRef.current = audio;
-
-        // Preload audio
         await audio.load();
         setAudioReady(true);
-
-        // Cleanup
-        return () => {
-          audio.removeEventListener("canplaythrough", () => {});
-        };
       } catch (error) {
         console.error("Audio initialization failed:", error);
         setAudioReady(false);
@@ -138,6 +122,9 @@ export default function Hero() {
     };
 
     initAudio();
+    return () => {
+      audioRef.current = null;
+    };
   }, []);
 
   // Background music initialization
@@ -148,8 +135,6 @@ export default function Hero() {
         music.loop = true;
         music.volume = 0.5;
         musicRef.current = music;
-
-        // Preload music
         await music.load();
       } catch (error) {
         console.error("Music initialization failed:", error);
@@ -157,20 +142,18 @@ export default function Hero() {
     };
 
     initMusic();
-
     return () => {
-      musicRef.current?.pause();
+      if (musicRef.current) {
+        musicRef.current.pause();
+        musicRef.current = null;
+      }
     };
   }, []);
 
   // Close on hover out
   useEffect(() => {
-    const handleMouseLeave = (e) => {
-      if (
-        isOpen &&
-        contentRef.current &&
-        !contentRef.current.contains(e.target)
-      ) {
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (isOpen && contentRef.current && !contentRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -179,10 +162,7 @@ export default function Hero() {
     return () => document.removeEventListener("mouseleave", handleMouseLeave);
   }, [isOpen]);
 
-  // Clone tech stack items for seamless looping
-  const duplicatedTechStack = [...techStack, ...techStack];
-
-  const toggleMusic = async () => {
+  const toggleMusic = useCallback(async () => {
     if (!musicRef.current) return;
 
     try {
@@ -195,31 +175,31 @@ export default function Hero() {
     } catch (error) {
       console.error("Music toggle error:", error);
     }
-  };
+  }, [musicPlaying]);
 
-  const handleButtonClick = async () => {
+  const handleButtonClick = useCallback(async () => {
     if (!audioReady) {
       console.log("Audio not ready yet");
       return;
     }
 
     try {
-      const audio = audioRef.current;
-      if (audio) {
-        audio.currentTime = 0;
-        await audio.play();
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        await audioRef.current.play();
         setIsOpen(true);
       }
     } catch (error) {
       console.error("Audio play error:", error);
-      // Fallback - open content even if audio fails
       setIsOpen(true);
     }
-  };
+  }, [audioReady]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
-  };
+  }, []);
+
+  const duplicatedTechStack = [...techStack, ...techStack];
 
   if (!mounted) return null;
 
@@ -255,7 +235,7 @@ export default function Hero() {
         onClick={toggleMusic}
         className={`fixed bottom-4 right-2 sm:right-4 z-50 p-2 sm:p-3 rounded-full transition-all duration-300 ${
           musicPlaying
-            ? "text-blue-500  backdrop-blur-sm"
+            ? "text-blue-500 backdrop-blur-sm"
             : "text-zinc-500 hover:text-blue-700 dark:hover:text-blue-300"
         }`}
         aria-label={musicPlaying ? "Turn music off" : "Turn music on"}
@@ -268,20 +248,20 @@ export default function Hero() {
       </button>
 
       <div className="relative w-full h-full pt-12 sm:pt-16 md:pt-20">
-        {/* Left Panel - Empty */}
+        {/* Left Panel */}
         <div
           className={`absolute top-0 left-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-950/20 z-20 transition-transform duration-700 ease-in-out ${
             isOpen ? "-translate-x-full" : "translate-x-0"
           }`}
         />
 
-        {/* Right Panel - Animated Title */}
+        {/* Right Panel */}
         <div
           className={`absolute top-0 right-0 h-full w-1/2 bg-zinc-200/90 dark:bg-zinc-950/20 flex items-center justify-start pl-4 sm:pl-6 md:pl-10 z-20 transition-transform duration-700 ease-in-out ${
             isOpen ? "translate-x-full" : "translate-x-0"
           }`}
         >
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-zinc-900 dark:text-white tracking-wide min-h-[2rem] sm:min-h-[2.5rem]">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-zinc-900 dark:text-white tracking-wide min-h-[2rem] sm:min-h-[2.5rem]" aria-live="polite">
             {typingText}
             <span className="animate-pulse">|</span>
           </h2>
@@ -326,7 +306,7 @@ export default function Hero() {
                   I&apos;m Melvin Okievor, a 22-year-old Italian Freelance
                   Front-end developer. I like to resolve design problems, create
                   smart user interface and imagine useful interaction,
-                  developing rich web experiences & web applications.
+                  developing rich web experiences &amp; web applications.
                 </p>
 
                 {/* Tech Stack */}
@@ -337,7 +317,6 @@ export default function Hero() {
                   <div className="relative overflow-hidden py-2 sm:py-4">
                     {/* Top row - flows to the right */}
                     <div
-                      ref={topRowRef}
                       className="flex w-full mb-2 sm:mb-4 group hover:[animation-play-state:paused]"
                       style={{
                         animation: "scrollRight 20s linear infinite",
@@ -360,7 +339,6 @@ export default function Hero() {
 
                     {/* Bottom row - flows to the left */}
                     <div
-                      ref={bottomRowRef}
                       className="flex w-full group hover:[animation-play-state:paused]"
                       style={{
                         animation: "scrollLeft 20s linear infinite",
@@ -397,10 +375,7 @@ export default function Hero() {
                       priority
                     />
                   </div>
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    {/* <span className="text-white text-xs sm:text-sm font-medium bg-black/50 px-2 sm:px-3 py-1 rounded-full">
-                    </span> */}
-                  </div>
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" />
                 </div>
               </div>
             </div>
@@ -418,31 +393,22 @@ export default function Hero() {
         >
           <div className="relative">
             <FiChevronDown className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 animate-bounce" />
-            <div className="absolute inset-0 rounded-full bg-blue-400/30 animate-ping opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 rounded-full bg-blue-400/30 animate-ping opacity-0 hover:opacity-100 transition-opacity duration-300" />
           </div>
         </button>
       </div>
 
-      {/* Add the animation keyframes to the global styles */}
+      {/* Animation keyframes */}
       <style jsx global>{`
         @keyframes scrollRight {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         @keyframes scrollLeft {
-          0% {
-            transform: translateX(-50%);
-          }
-          100% {
-            transform: translateX(0);
-          }
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
       `}</style>
     </div>
   );
 }
-
