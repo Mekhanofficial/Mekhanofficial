@@ -60,7 +60,7 @@ const Projects = () => {
       title: "Another",
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
-      link: "https://flowstate-omega.vercel.app",
+      link: "https://flowstate-phi.vercel.app",
       mockup: "/images/pro2.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
@@ -93,7 +93,7 @@ const Projects = () => {
       title: "Koin Fu",
       description:
         "A crypto trading dashboard for tracking market prices, trading pairs, and portfolio stats.",
-      link: "elitebitx.vercel.app", // Replace with live site if available
+      link: "https://elitebitx.vercel.app", // Replace with live site if available
       mockup: "/images/pro4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
