@@ -42,21 +42,7 @@ export default function Hero() {
       name: "GitHub",
       url: "https://github.com",
     },
-    {
-      icon: <SiLinkedin className="w-4 h-4" />,
-      name: "LinkedIn",
-      url: "https://linkedin.com",
-    },
-    {
-      icon: <SiX className="w-4 h-4" />,
-      name: "X (Twitter)",
-      url: "https://twitter.com",
-    },
-    {
-      icon: <SiInstagram className="w-4 h-4" />,
-      name: "Instagram",
-      url: "https://instagram.com",
-    },
+ 
   ];
 
   const roles = [
@@ -321,7 +307,7 @@ export default function Hero() {
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 z-50 p-1 sm:p-2 rounded-full bg-zinc-200/90 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors duration-300"
+                className="absolute top-2 left-2 sm:top-4 sm:left-4 md:top-6 md:left-6 z-50 p-1 sm:p-2 rounded-full bg-zinc-200/90 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors duration-300"
                 aria-label="Close"
               >
                 <FiX className="w-4 h-4 sm:w-5 sm:h-5" />
