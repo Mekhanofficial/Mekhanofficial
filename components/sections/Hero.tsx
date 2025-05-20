@@ -76,6 +76,11 @@ export default function Hero() {
     { icon: <SiGit className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Git" },
   ];
 
+  // Set mounted to true after component mounts
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Handle scroll event
   useEffect(() => {
     const handleScroll = () => {
@@ -88,26 +93,43 @@ export default function Hero() {
 
   // Typing effect
   useEffect(() => {
-    setMounted(true);
-    let charIndex = 0;
-    const currentRole = roles[currentRoleIndex];
-    const typingInterval = setInterval(() => {
-      if (charIndex <= currentRole.length) {
-        setTypingText(currentRole.substring(0, charIndex));
-        charIndex++;
-      } else {
-        clearInterval(typingInterval);
-        setTimeout(() => {
-          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-        }, 2000);
-      }
-    }, 100);
+    if (!mounted) return;
 
-    return () => clearInterval(typingInterval);
-  }, [currentRoleIndex, roles]);
+    let charIndex = 0;
+    let typingInterval: NodeJS.Timeout;
+    let roleTimeout: NodeJS.Timeout;
+
+    const typeRole = () => {
+      const currentRole = roles[currentRoleIndex];
+
+      typingInterval = setInterval(() => {
+        if (charIndex <= currentRole.length) {
+          setTypingText(currentRole.substring(0, charIndex));
+          charIndex++;
+        } else {
+          clearInterval(typingInterval);
+
+          // Wait 2s, then move to next role
+          roleTimeout = setTimeout(() => {
+            setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+          }, 2000);
+        }
+      }, 100);
+    };
+
+    typeRole();
+
+    return () => {
+      clearInterval(typingInterval);
+      clearTimeout(roleTimeout);
+    };
+  }, [currentRoleIndex, mounted]);
+  
 
   // Audio effects initialization
   useEffect(() => {
+    if (!mounted) return;
+
     const initAudio = async () => {
       try {
         const audio = new Audio("/sound/click.wav");
@@ -125,10 +147,12 @@ export default function Hero() {
     return () => {
       audioRef.current = null;
     };
-  }, []);
+  }, [mounted]);
 
   // Background music initialization
   useEffect(() => {
+    if (!mounted) return;
+
     const initMusic = async () => {
       try {
         const music = new Audio("/sound/mounika-oblii.mp3");
@@ -148,10 +172,12 @@ export default function Hero() {
         musicRef.current = null;
       }
     };
-  }, []);
+  }, [mounted]);
 
   // Close on hover out
   useEffect(() => {
+    if (!mounted) return;
+
     const handleMouseLeave = (e: MouseEvent) => {
       if (isOpen && contentRef.current && !contentRef.current.contains(e.target as Node)) {
         setIsOpen(false);
@@ -160,10 +186,10 @@ export default function Hero() {
 
     document.addEventListener("mouseleave", handleMouseLeave);
     return () => document.removeEventListener("mouseleave", handleMouseLeave);
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   const toggleMusic = useCallback(async () => {
-    if (!musicRef.current) return;
+    if (!musicRef.current || !mounted) return;
 
     try {
       if (musicPlaying) {
@@ -175,10 +201,10 @@ export default function Hero() {
     } catch (error) {
       console.error("Music toggle error:", error);
     }
-  }, [musicPlaying]);
+  }, [musicPlaying, mounted]);
 
   const handleButtonClick = useCallback(async () => {
-    if (!audioReady) {
+    if (!audioReady || !mounted) {
       console.log("Audio not ready yet");
       return;
     }
@@ -193,13 +219,14 @@ export default function Hero() {
       console.error("Audio play error:", error);
       setIsOpen(true);
     }
-  }, [audioReady]);
+  }, [audioReady, mounted]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
 
   const duplicatedTechStack = [...techStack, ...techStack];
+
 
   if (!mounted) return null;
 
