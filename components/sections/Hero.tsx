@@ -88,7 +88,7 @@ export default function Hero() {
       name: "Firebase",
     },
     { icon: <SiGit className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Git" },
-    { icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Firebase" },
+    
   ];
 
   // Set mounted to true after component mounts
@@ -348,11 +348,11 @@ export default function Hero() {
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-300">
-                  I'm Melvin Okievor, a freelance front-end developer passionate
-                  about crafting clean, responsive interfaces and building
-                  intuitive, high-performing web applications. I enjoy solving
-                  design challenges and turning ideas into engaging digital
-                  experiences through modern development practices.
+                  I&apos;m Melvin Okievor, a freelance front-end developer
+                  passionate about crafting clean, responsive interfaces and
+                  building intuitive, high-performing web applications. I enjoy
+                  solving design challenges and turning ideas into engaging
+                  digital experiences through modern development practices.
                 </p>
 
                 {/* Tech Stack */}
