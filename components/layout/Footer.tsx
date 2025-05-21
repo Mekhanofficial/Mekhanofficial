@@ -1,8 +1,14 @@
-// components/layout/Footer.client.tsx
 "use client";
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import {
+  FaFacebookF,
+  FaLinkedinIn,
+  FaMediumM,
+  FaGithub,
+  FaTwitter,
+} from "react-icons/fa";
 
 const ScrollToTopButton = dynamic(() => import("../ui/ScrollToTop"), {
   ssr: false,
@@ -10,32 +16,78 @@ const ScrollToTopButton = dynamic(() => import("../ui/ScrollToTop"), {
 
 export default function Footer() {
   return (
-    <footer className="relative min-h-[50vh] py-8 px-4 md:px-8 text-center bg-gradient-to-b from-primary-light to-gray-300 text-gray-800 dark:from-primary-dark dark:to-black dark:text-white">
-      <div className="max-w-4xl mx-auto">
-        <p className="text-2xl md:text-3xl font-bold mb-6">
-          That&apos;s <span className="line-through">not</span> all folks!
-        </p>
-
-        <div className="mb-6">
-          <p className="mb-2 text-gray-600 dark:text-gray-300">
-            You can see more awesome projects on LinkedIn.
+    <footer className="relative flex flex-col md:flex-row justify-between items-start min-h-[40vh] px-6 py-10 bg-gray-100 text-gray-900 dark:bg-neutral-950 dark:text-white">
+      {/* Left Side Content */}
+      <div className="flex flex-col justify-between max-w-xl space-y-6">
+        <div>
+          <p className="text-lg font-semibold mb-3">
+            That&apos;s <span className="line-through">not</span> all folks!
           </p>
-          <Link
-            href="https://www.linkedin.com/in/mekhano"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-          >
-            Visit My LinkedIn
-          </Link>
+          <p className="text-sm text-gray-700 dark:text-gray-400">
+            You can see more awesome projects on{" "}
+            <Link
+              href="https://www.linkedin.com/in/mekhano"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              LinkedIn
+            </Link>
+            .
+          </p>
+          <p className="text-sm underline text-gray-700 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+            <Link href="mailto:melvinokievor@gmail.com">
+              Send me a message if you want to chat.
+            </Link>
+          </p>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-300">
-          Send me a message if you want to chat.
-        </p>
+        {/* Social Icons */}
+        <div className="flex space-x-5 text-2xl mt-2 text-gray-800 dark:text-white">
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaFacebookF />
+          </a>
+          <a
+            href="https://linkedin.com/in/mekhano"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaLinkedinIn />
+          </a>
+          <a
+            href="https://medium.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaMediumM />
+          </a>
+          <a
+            href="https://github.com/mekhanofficial"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaGithub />
+          </a>
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaTwitter />
+          </a>
+        </div>
       </div>
 
-      <ScrollToTopButton />
+      {/* Scroll To Top Button Container */}
+      <div className="mt-10 md:mt-0 w-full md:w-auto md:h-full flex justify-center items-center">
+        <div className="bg-gray-300 dark:bg-gray-800 p-4 rounded-md">
+          <ScrollToTopButton />
+        </div>
+      </div>
     </footer>
   );
 }

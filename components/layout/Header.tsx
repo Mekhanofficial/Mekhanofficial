@@ -79,21 +79,45 @@ export default function Header() {
     setFormStatus("submitting");
 
     try {
-      // Replace with your actual form submission logic
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Check if response is JSON
+      const contentType = response.headers.get("content-type");
+      if (!contentType?.includes("application/json")) {
+        const text = await response.text();
+        throw new Error(`Expected JSON but got: ${text.substring(0, 100)}...`);
+      }
+
+      const data = (await response.json()) as
+        | { success: boolean }
+        | { message: string; error?: string };
+
+      if (!response.ok) {
+        throw new Error(
+          "message" in data ? data.message : "Failed to send message"
+        );
+      }
+
       setFormStatus("success");
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setFormStatus("idle"), 3000);
     } catch (error) {
       console.error("Form submission error:", error);
+
+      // Type-safe error handling
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+
       setFormStatus("error");
       setTimeout(() => setFormStatus("idle"), 3000);
     }
   };
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <>

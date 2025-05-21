@@ -41,7 +41,7 @@ const Projects = () => {
   const projects: Project[] = [
     {
       image: "/images/bgg2.jpeg",
-      title: "MatchFit Clothing",
+      title: "MatchFit Wardrobe",
       description:
         "An e-commerce clothing site with gender-based filtering, cart, and wishlist functionality.",
       link: "https://matchfit.vercel.app", // Replace with live site if available
@@ -51,7 +51,7 @@ const Projects = () => {
         builtWith: "Developed for fashion commerce with product filtering",
         role: "Frontend Developer",
       },
-      bgChar: "C",
+      bgChar: "W",
       charColor: "text-green-500",
       accentColor: "bg-green-500/20",
     },

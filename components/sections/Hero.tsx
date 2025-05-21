@@ -13,10 +13,8 @@ import {
   SiVuedotjs,
   SiGithub,
   SiLinkedin,
-  SiX,
   SiJavascript,
   SiGit,
-  SiInstagram,
 } from "react-icons/si";
 import Image from "next/image";
 
@@ -57,23 +55,40 @@ export default function Hero() {
 
   const roles = [
     "FRONTEND DEVELOPER",
-    "UI/UX DESIGNER",
     "REACT SPECIALIST",
     "WEB DEVELOPER",
     "CODE WHISPERER",
+    "DESIGN-SAVVY CODER",
   ];
+  
 
   const techStack: TechItem[] = [
     { icon: <SiReact className="w-5 h-5 sm:w-6 sm:h-6" />, name: "React" },
-    { icon: <SiNextdotjs className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Next.js" },
-    { icon: <SiJavascript className="w-5 h-5 sm:w-6 sm:h-6" />, name: "JavaScript" },
+    {
+      icon: <SiNextdotjs className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Next.js",
+    },
+    {
+      icon: <SiJavascript className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "JavaScript",
+    },
     { icon: <SiHtml5 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "HTML5" },
     { icon: <SiCss3 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "CSS3" },
-    { icon: <SiTailwindcss className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Tailwind" },
+    {
+      icon: <SiTailwindcss className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Tailwind",
+    },
     { icon: <SiVuedotjs className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Vue.js" },
-    { icon: <SiBootstrap className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Bootstrap" },
-    { icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Firebase" },
+    {
+      icon: <SiBootstrap className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Bootstrap",
+    },
+    {
+      icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Firebase",
+    },
     { icon: <SiGit className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Git" },
+    { icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Firebase" },
   ];
 
   // Set mounted to true after component mounts
@@ -288,7 +303,10 @@ export default function Hero() {
             isOpen ? "translate-x-full" : "translate-x-0"
           }`}
         >
-          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-zinc-900 dark:text-white tracking-wide min-h-[2rem] sm:min-h-[2.5rem]" aria-live="polite">
+          <h2
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-zinc-900 dark:text-white tracking-wide min-h-[2rem] sm:min-h-[2.5rem]"
+            aria-live="polite"
+          >
             {typingText}
             <span className="animate-pulse">|</span>
           </h2>
@@ -330,10 +348,11 @@ export default function Hero() {
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-300">
-                  I&apos;m Melvin Okievor, a 22-year-old Italian Freelance
-                  Front-end developer. I like to resolve design problems, create
-                  smart user interface and imagine useful interaction,
-                  developing rich web experiences &amp; web applications.
+                  I'm Melvin Okievor, a freelance front-end developer passionate
+                  about crafting clean, responsive interfaces and building
+                  intuitive, high-performing web applications. I enjoy solving
+                  design challenges and turning ideas into engaging digital
+                  experiences through modern development practices.
                 </p>
 
                 {/* Tech Stack */}
@@ -428,12 +447,20 @@ export default function Hero() {
       {/* Animation keyframes */}
       <style jsx global>{`
         @keyframes scrollRight {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
         @keyframes scrollLeft {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0);
+          }
         }
       `}</style>
     </div>
