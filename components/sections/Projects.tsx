@@ -45,7 +45,7 @@ const Projects = () => {
       description:
         "An e-commerce clothing site with gender-based filtering, cart, and wishlist functionality.",
       link: "https://matchfit.vercel.app", // Replace with live site if available
-      mockup: "/images/pro1.png",
+      mockup: "/images/px1.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Developed for fashion commerce with product filtering",
@@ -61,7 +61,7 @@ const Projects = () => {
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
       link: "https://flowstate-phi.vercel.app",
-      mockup: "/images/pro2.png",
+      mockup: "/images/px4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Designed as a personal blog for showcasing writing",
@@ -77,7 +77,7 @@ const Projects = () => {
       description:
         "A sleek restaurant website where users can explore meals and place orders directly through WhatsApp.",
       link: "https://www.themealsgraffiti.com",
-      mockup: "/images/pro3.png",
+      mockup: "/images/px3.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Personal branding project for food service engagement",
@@ -94,7 +94,7 @@ const Projects = () => {
       description:
         "A crypto trading dashboard for tracking market prices, trading pairs, and portfolio stats.",
       link: "https://elitebitx.vercel.app", // Replace with live site if available
-      mockup: "/images/pro4.png",
+      mockup: "/images/px4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Built as a crypto trading platform UI prototype",
@@ -163,8 +163,8 @@ const Projects = () => {
                       <Image
                         src={item.mockup}
                         alt={`${item.title} mockup`}
-                        width={350}
-                        height={350}
+                        width={450}
+                        height={450}
                         className={`object-contain transition-all duration-700 grayscale ${
                           hoveredIndex === index ? "grayscale-0" : ""
                         }`}

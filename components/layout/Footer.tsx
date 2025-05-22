@@ -1,14 +1,9 @@
-"use client";
+"use client"
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {
-  FaFacebookF,
-  FaLinkedinIn,
-  FaMediumM,
-  FaGithub,
-  FaTwitter,
-} from "react-icons/fa";
+import { FaLinkedinIn, FaTwitter, FaInstagram, FaGithub } from "react-icons/fa";
+import { SiDevdotto } from "react-icons/si";
 
 const ScrollToTopButton = dynamic(() => import("../ui/ScrollToTop"), {
   ssr: false,
@@ -45,13 +40,6 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex space-x-5 text-2xl mt-2 text-gray-800 dark:text-white">
           <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FaFacebookF />
-          </a>
-          <a
             href="https://linkedin.com/in/mekhano"
             target="_blank"
             rel="noopener noreferrer"
@@ -59,11 +47,18 @@ export default function Footer() {
             <FaLinkedinIn />
           </a>
           <a
-            href="https://medium.com"
+            href="https://twitter.com/mekhanofficial"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaMediumM />
+            <FaTwitter />
+          </a>
+          <a
+            href="https://instagram.com/mekhanofficial"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FaInstagram />
           </a>
           <a
             href="https://github.com/mekhanofficial"
@@ -73,11 +68,11 @@ export default function Footer() {
             <FaGithub />
           </a>
           <a
-            href="https://twitter.com"
+            href="https://dev.to/mekhano"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaTwitter />
+            <SiDevdotto />
           </a>
         </div>
       </div>
