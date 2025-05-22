@@ -61,7 +61,7 @@ const Projects = () => {
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
       link: "https://flowstate-phi.vercel.app",
-      mockup: "/images/px4.png",
+      mockup: "/images/px2.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
         builtWith: "Designed as a personal blog for showcasing writing",

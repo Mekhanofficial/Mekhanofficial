@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FaLinkedinIn, FaTwitter, FaInstagram, FaGithub } from "react-icons/fa";
-import { SiDevdotto } from "react-icons/si";
+import { SiDevdotto, SiVercel } from "react-icons/si";
 
 const ScrollToTopButton = dynamic(() => import("../ui/ScrollToTop"), {
   ssr: false,
@@ -15,9 +15,11 @@ export default function Footer() {
       {/* Left Side Content */}
       <div className="flex flex-col justify-between max-w-xl space-y-6">
         <div>
-          <p className="text-lg font-semibold mb-3">
-            That&apos;s <span className="line-through">not</span> all folks!
-          </p>
+          <button className="border border-gray-700 dark:border-gray-900 p-1 mb-2 items-center ">
+            <p className="text-lg font-semibold mb-3">
+              That&apos;s <span className="line-through">not</span> all folks!
+            </p>
+          </button>
           <p className="text-sm text-gray-700 dark:text-gray-400">
             You can see more awesome projects on{" "}
             <Link
@@ -68,11 +70,11 @@ export default function Footer() {
             <FaGithub />
           </a>
           <a
-            href="https://dev.to/mekhano"
+            href="https://vercel.com/mekhanofficial"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <SiDevdotto />
+            <SiVercel />
           </a>
         </div>
       </div>
