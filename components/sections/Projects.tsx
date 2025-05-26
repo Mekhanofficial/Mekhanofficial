@@ -60,7 +60,7 @@ const Projects = () => {
       title: "Another",
       description:
         "A minimal blog platform for sharing thoughts, updates, and articles with a clean reading experience.",
-      link: "https://flowstate-phi.vercel.app",
+      link: "https://an-other.vercel.app",
       mockup: "/images/px2.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
