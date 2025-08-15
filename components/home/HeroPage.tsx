@@ -133,7 +133,7 @@ export default function HeroPage() {
                 className="border-2 border-green-300 text-green-100 font-bold px-8 py-4 rounded-lg hover:bg-green-900/30 transition-all duration-300 flex items-center gap-3 group"
               >
                 <FaChrome className="text-green-300 group-hover:text-white text-lg" />
-                Chrome Extension
+                Chrome Extensions
                 <FaArrowRight className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0" />
               </motion.button>
             </Link>
