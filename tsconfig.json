@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": ["./node_modules/@types", "./types"],
     "plugins": [
       {
         "name": "next"
@@ -28,7 +29,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "components/layout/Layout.tsx",
-    "components/sections/About.jsx"
-, "components/sections/Hero.tsx", "components/sections/Projects.tsx"  ],
+    "components/sections/About.tsx",
+    "components/sections/Hero.tsx",
+    "components/sections/Projects.tsx",
+    "types/**/*.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

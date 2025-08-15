@@ -1,23 +1,27 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Providers from "@/providers";
+import React, { ReactNode } from 'react'
+import '../styles/globals.css'
+import Headerpage from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
-export const metadata: Metadata = {
-  title: "Mekhanofficial",
-  description:
-    "My Portfolio.",
-};
+export const metadata = {
+  title: 'Crescent',
+  description: 'Crescent Crypto Platform',
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+interface RootLayoutProps {
+  children: ReactNode
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        <Providers>{children}</Providers>
+    <html lang="en">
+      <body>
+        <Headerpage />
+        <main>{children}
+
+        </main>
+        <Footer />
       </body>
     </html>
-  );
+  )
 }

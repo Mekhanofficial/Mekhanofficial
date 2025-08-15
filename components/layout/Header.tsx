@@ -1,463 +1,585 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react"
+// @ts-ignore
+import { Sparklines, SparklinesLine, SparklinesSpots } from "react-sparklines"
 
-export default function Header() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [contactDropdownOpen, setContactDropdownOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [formStatus, setFormStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+function LiveBTCChart() {
+  const [prices, setPrices] = useState<number[]>([])
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null)
+  const [priceChange, setPriceChange] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  async function fetchPrice() {
+    try {
+      setIsLoading(true)
+      const res = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+      )
+      const data = await res.json()
+      const price = data.bitcoin.usd
+
+      setPrices((prev) => {
+        const newArr = [...prev, price]
+        if (newArr.length > 1) {
+          const change = ((price - newArr[0]) / newArr[0]) * 100
+          setPriceChange(change)
+        }
+        if (newArr.length > 20) newArr.shift()
+        return newArr
+      })
+      setCurrentPrice(price)
+    } catch (error) {
+      console.error("Failed to fetch BTC price:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    setMounted(true);
-
-    if (typeof window !== "undefined") {
-      const audio = new Audio("/sound/click.wav");
-      audio.volume = 0.3;
-      audio.load();
-      audioRef.current = audio;
-
-      // Close dropdown when clicking outside
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setContactDropdownOpen(false);
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        audioRef.current = null;
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+    fetchPrice()
+    intervalRef.current = setInterval(fetchPrice, 10000)
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
     }
-  }, []);
+  }, [])
 
-  const handleThemeToggle = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch((e) => console.error("Audio error:", e));
-    }
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const getPriceColor = () => {
+    if (priceChange > 0) return "text-green-400"
+    if (priceChange < 0) return "text-red-400"
+    return "text-gray-400"
+  }
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const toggleContactDropdown = () => {
-    setContactDropdownOpen(!contactDropdownOpen);
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus("submitting");
-
-    try {
-      const response = await fetch("/api/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      // Check if response is JSON
-      const contentType = response.headers.get("content-type");
-      if (!contentType?.includes("application/json")) {
-        const text = await response.text();
-        throw new Error(`Expected JSON but got: ${text.substring(0, 100)}...`);
-      }
-
-      const data = (await response.json()) as
-        | { success: boolean }
-        | { message: string; error?: string };
-
-      if (!response.ok) {
-        throw new Error(
-          "message" in data ? data.message : "Failed to send message"
-        );
-      }
-
-      setFormStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setFormStatus("idle"), 3000);
-    } catch (error) {
-      console.error("Form submission error:", error);
-
-      // Type-safe error handling
-      const errorMessage =
-        error instanceof Error ? error.message : "An unknown error occurred";
-
-      setFormStatus("error");
-      setTimeout(() => setFormStatus("idle"), 3000);
-    }
-  };
+  const getChangeIcon = () => {
+    if (priceChange > 0) return "▲"
+    if (priceChange < 0) return "▼"
+    return "➝"
+  }
 
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-50 py-3 px-4 sm:px-6 lg:px-8 bg-zinc-200/90 dark:bg-zinc-950/10 backdrop-blur-sm transition-colors duration-200 h-16 border-b border-zinc-300/50 dark:border-zinc-800/50">
-        <div className="container mx-auto flex justify-between items-center h-full">
-          <Link
-            href="/"
-            className="text-xl font-semibold text-zinc-800 dark:text-zinc-100 hover:opacity-80 transition-opacity flex items-center gap-2"
-          >
-            <motion.span
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="block"
-            >
-              Mekhano
-            </motion.span>
-          </Link>
+    <div className="flex items-center space-x-3 text-sm font-mono select-none">
+      <div className="font-semibold text-white">BTC/USD</div>
+      <div className={`flex items-center ${getPriceColor()}`}>
+        {isLoading ? (
+          <div className="h-4 w-16 bg-gray-700 rounded animate-pulse"></div>
+        ) : (
+          <>
+            <span>${currentPrice ? currentPrice.toLocaleString() : "—"}</span>
+            {prices.length > 1 && (
+              <span className="ml-1 text-xs flex items-center">
+                {getChangeIcon()} {Math.abs(priceChange).toFixed(2)}%
+              </span>
+            )}
+          </>
+        )}
+      </div>
+      <div className="w-20 h-6">
+        {prices.length > 1 ? (
+          <Sparklines data={prices} svgWidth={80} svgHeight={24}>
+            <SparklinesLine
+              color={priceChange >= 0 ? "#34D399" : "#F87171"}
+              style={{ strokeWidth: 2, strokeLinecap: "round", fill: "none" }}
+            />
+            <SparklinesSpots
+              size={3}
+              style={{ fill: priceChange >= 0 ? "#34D399" : "#F87171" }}
+            />
+          </Sparklines>
+        ) : (
+          <div className="h-full w-full bg-gray-700 rounded animate-pulse"></div>
+        )}
+      </div>
+    </div>
+  )
+}
 
-          <div className="flex items-center gap-6">
-            <nav className="hidden md:flex gap-6 items-center">
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={toggleContactDropdown}
-                  className="relative text-zinc-600 hover:text-blue-500 dark:text-zinc-400 dark:hover:text-blue-400 transition-colors group flex items-center gap-1"
-                >
-                  Contact
-                  <motion.span
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      contactDropdownOpen ? "rotate-180" : ""
-                    }`}
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
+export default function Headerpage() {
+  const [openMenu, setOpenMenu] = useState<null | "trade" | "institution">(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
 
-                <AnimatePresence>
-                  {contactDropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-80 bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-4 border border-zinc-200 dark:border-zinc-700"
-                    >
-                      <h3 className="font-medium text-lg mb-3 text-zinc-800 dark:text-zinc-100">
-                        Get in touch
-                      </h3>
+  const tradeRef = useRef<HTMLDivElement>(null)
+  const institutionRef = useRef<HTMLDivElement>(null)
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
 
-                      {formStatus === "success" ? (
-                        <div className="p-3 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">
-                          Message sent successfully!
-                        </div>
-                      ) : formStatus === "error" ? (
-                        <div className="p-3 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded">
-                          Error sending message. Please try again.
-                        </div>
-                      ) : (
-                        <form onSubmit={handleSubmit}>
-                          <div className="mb-3">
-                            <label
-                              htmlFor="name"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                            >
-                              Name
-                            </label>
-                            <input
-                              type="text"
-                              id="name"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleInputChange}
-                              required
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
-                          </div>
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        tradeRef.current &&
+        !tradeRef.current.contains(event.target as Node) &&
+        institutionRef.current &&
+        !institutionRef.current.contains(event.target as Node) &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node)
+      ) {
+        setOpenMenu(null)
+        setMobileMenuOpen(false)
+      }
+    }
 
-                          <div className="mb-3">
-                            <label
-                              htmlFor="email"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                            >
-                              Email
-                            </label>
-                            <input
-                              type="email"
-                              id="email"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              required
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
-                          </div>
+    function handleScroll() {
+      setScrolled(window.scrollY > 10)
+    }
 
-                          <div className="mb-4">
-                            <label
-                              htmlFor="message"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                            >
-                              Message
-                            </label>
-                            <textarea
-                              id="message"
-                              name="message"
-                              value={formData.message}
-                              onChange={handleInputChange}
-                              required
-                              rows={3}
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
-                          </div>
+    document.addEventListener("mousedown", handleClickOutside)
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
-                          <button
-                            type="submit"
-                            disabled={formStatus === "submitting"}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {formStatus === "submitting"
-                              ? "Sending..."
-                              : "Send Message"}
-                          </button>
-                        </form>
-                      )}
+  const toggleMenu = (menu: "trade" | "institution") => {
+    setOpenMenu(openMenu === menu ? null : menu)
+  }
 
-                      <div className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
-                        <h4 className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-2">
-                          Or contact directly:
-                        </h4>
-                        <div className="flex flex-col gap-1">
-                          <a
-                            href="mailto:melvinokievor@gmail.com"
-                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                          >
-                            melvinokievor@gmail.com{" "}
-                          </a>
-                          <a
-                            href="tel: +2349060816260"
-                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                          >
-                            +234 (906) 081-6260
-                          </a>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </nav>
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
 
-            {/* Mobile menu button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="md:hidden text-zinc-700 dark:text-zinc-300 p-1 relative z-50"
-              aria-label="Toggle menu"
-            >
-              <motion.div
-                animate={mobileMenuOpen ? "open" : "closed"}
-                variants={{
-                  closed: { rotate: 0 },
-                  open: { rotate: 180 },
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  {mobileMenuOpen ? (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  ) : (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  )}
-                </svg>
-              </motion.div>
-            </button>
+  const handleKeyDown = (event: React.KeyboardEvent, menu: "trade" | "institution") => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      toggleMenu(menu)
+    }
+    if (event.key === "Escape") {
+      setOpenMenu(null)
+    }
+  }
 
-            {/* Light Bulb Pendulum */}
-            <button
-              onClick={handleThemeToggle}
-              className="relative h-[180px] -mt-2 flex flex-col items-center group"
-              aria-label="Toggle theme"
-            >
-              {/* Extended Rope */}
-              <div className="absolute top-0 w-px h-full bg-gradient-to-b from-blue-600 to-blue-500 animate-swing origin-top" />
-
-              {/* Light Bulb */}
-              <motion.div
-                className="absolute bottom-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-md bg-amber-50 dark:bg-zinc-800 animate-swing-child"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 transition-all duration-300 ${
-                    theme === "light"
-                      ? "text-blue-500 rotate-180"
-                      : "text-zinc-500 rotate-180 opacity-80"
-                  }`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
-                </svg>
-              </motion.div>
-            </button>
+  return (
+    <header
+      className={`bg-gray-900 text-white sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? "shadow-xl bg-opacity-95 backdrop-blur-sm" : "shadow-md"
+      }`}
+    >
+      <div className="container mx-auto px-6 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo + BTC Chart */}
+          <div className="flex items-center space-x-6">
+            <div className="text-2xl font-extrabold tracking-tight cursor-pointer select-none bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              Crescent
+            </div>
+            <LiveBTCChart />
           </div>
-        </div>
-      </header>
 
-      {/* Mobile Menu */}
-      <motion.div
-        initial={{ opacity: 0, x: "100%" }}
-        animate={{
-          opacity: mobileMenuOpen ? 1 : 0,
-          x: mobileMenuOpen ? 0 : "100%",
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed inset-0 z-40 bg-zinc-100/95 dark:bg-zinc-950/95 backdrop-blur-lg pt-20 px-6 ${
-          mobileMenuOpen ? "block" : "hidden"
-        }`}
-      >
-        <div className="flex flex-col items-center gap-8">
-          <div className="w-full max-w-md">
-            <h3 className="text-xl font-medium mb-4 text-center text-zinc-800 dark:text-zinc-200">
-              Contact Me
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="mobile-name"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="mobile-name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
-              </div>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex space-x-8 font-medium text-gray-300 relative">
+            <a
+              href="#"
+              className={`relative px-3 py-2 rounded-lg transition-all ${
+                hoveredItem === "buy" ? "text-white" : "hover:text-white"
+              }`}
+              onMouseEnter={() => setHoveredItem("buy")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              Buy Crypto
+              {hoveredItem === "buy" && (
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-6 bg-blue-400 rounded-full"></span>
+              )}
+            </a>
+            <a
+              href="#"
+              className={`relative px-3 py-2 rounded-lg transition-all ${
+                hoveredItem === "prices" ? "text-white" : "hover:text-white"
+              }`}
+              onMouseEnter={() => setHoveredItem("prices")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              Prices
+              {hoveredItem === "prices" && (
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-6 bg-blue-400 rounded-full"></span>
+              )}
+            </a>
 
-              <div>
-                <label
-                  htmlFor="mobile-email"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="mobile-email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="mobile-message"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="mobile-message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
-              </div>
-
+            {/* Trade dropdown */}
+            <div className="relative" ref={tradeRef}>
               <button
-                type="submit"
-                disabled={formStatus === "submitting"}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => toggleMenu("trade")}
+                onKeyDown={(e) => handleKeyDown(e, "trade")}
+                aria-haspopup="true"
+                aria-expanded={openMenu === "trade"}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all relative ${
+                  openMenu === "trade" || hoveredItem === "trade"
+                    ? "text-white"
+                    : "hover:text-white text-gray-300"
+                }`}
+                onMouseEnter={() => setHoveredItem("trade")}
+                onMouseLeave={() => setHoveredItem(null)}
               >
-                {formStatus === "submitting" ? "Sending..." : "Send Message"}
+                <span>Trade</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    openMenu === "trade" ? "rotate-180" : "rotate-0"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                {(openMenu === "trade" || hoveredItem === "trade") && (
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-6 bg-blue-400 rounded-full"></span>
+                )}
               </button>
-            </form>
-
-            <div className="mt-6 pt-6 border-t border-zinc-300 dark:border-zinc-700">
-              <h4 className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-3 text-center">
-                Direct Contact
-              </h4>
-              <div className="flex flex-col items-center gap-2">
-                <a
-                  href="mailto:hello@example.com"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                   melvinokievor@gmail.com
-                </a>
-                <a
-                  href="tel:+2349060816260"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  +234 (906) 081-6260
-                </a>
+              <div
+                className={`absolute left-0 mt-1 w-48 bg-gray-800 rounded-lg shadow-xl ring-1 ring-gray-700 transition-all duration-200 origin-top ${
+                  openMenu === "trade"
+                    ? "opacity-100 visible scale-y-100"
+                    : "opacity-0 invisible scale-y-95 pointer-events-none"
+                }`}
+                role="menu"
+                aria-label="Trade submenu"
+              >
+                <div className="py-1">
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "trade" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-blue-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                      ></path>
+                    </svg>
+                    Spot Trading
+                  </a>
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "trade" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-purple-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    Margin Trading
+                  </a>
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "trade" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                      ></path>
+                    </svg>
+                    Futures
+                  </a>
+                </div>
               </div>
             </div>
+
+            <a
+              href="#"
+              className={`relative px-3 py-2 rounded-lg transition-all ${
+                hoveredItem === "staking" ? "text-white" : "hover:text-white"
+              }`}
+              onMouseEnter={() => setHoveredItem("staking")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              Staking
+              {hoveredItem === "staking" && (
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-6 bg-blue-400 rounded-full"></span>
+              )}
+            </a>
+
+            {/* Institution dropdown */}
+            <div className="relative" ref={institutionRef}>
+              <button
+                onClick={() => toggleMenu("institution")}
+                onKeyDown={(e) => handleKeyDown(e, "institution")}
+                aria-haspopup="true"
+                aria-expanded={openMenu === "institution"}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-all relative ${
+                  openMenu === "institution" || hoveredItem === "institution"
+                    ? "text-white"
+                    : "hover:text-white text-gray-300"
+                }`}
+                onMouseEnter={() => setHoveredItem("institution")}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <span>Institution</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    openMenu === "institution" ? "rotate-180" : "rotate-0"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                {(openMenu === "institution" || hoveredItem === "institution") && (
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-0.5 w-8 bg-blue-400 rounded-full"></span>
+                )}
+              </button>
+              <div
+                className={`absolute left-0 mt-1 w-56 bg-gray-800 rounded-lg shadow-xl ring-1 ring-gray-700 transition-all duration-200 origin-top ${
+                  openMenu === "institution"
+                    ? "opacity-100 visible scale-y-100"
+                    : "opacity-0 invisible scale-y-95 pointer-events-none"
+                }`}
+                role="menu"
+                aria-label="Institution submenu"
+              >
+                <div className="py-1">
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "institution" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-indigo-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      ></path>
+                    </svg>
+                    Institutional Accounts
+                  </a>
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "institution" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-yellow-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                      ></path>
+                    </svg>
+                    API Access
+                  </a>
+                  <a
+                    href="#"
+                    className="flex items-center px-4 py-2 text-sm hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors rounded mx-1 my-1"
+                    role="menuitem"
+                    tabIndex={openMenu === "institution" ? 0 : -1}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2 text-pink-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      ></path>
+                    </svg>
+                    White Label
+                  </a>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* Buttons */}
+          <div className="hidden md:flex space-x-3 items-center">
+            <button className="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              Log In
+            </button>
+            <button className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 shadow-md hover:shadow-lg">
+              Sign Up
+            </button>
           </div>
 
-          
+          {/* Mobile menu button */}
+          <div className="md:hidden" ref={mobileMenuRef}>
+            <button
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+              className="p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              {mobileMenuOpen ? (
+                <svg
+                  className="w-6 h-6 text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg
+                  className="w-6 h-6 text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+
+            {mobileMenuOpen && (
+              <div className="absolute top-full left-0 right-0 bg-gray-900 shadow-xl rounded-b-lg mt-1 py-3 px-4 space-y-2 font-medium text-gray-300 z-50">
+                <a
+                  href="#"
+                  className="block px-3 py-2 hover:text-white hover:bg-gray-700 rounded-lg transition-all"
+                >
+                  Buy Crypto
+                </a>
+                <a
+                  href="#"
+                  className="block px-3 py-2 hover:text-white hover:bg-gray-700 rounded-lg transition-all"
+                >
+                  Prices
+                </a>
+
+                {/* Mobile dropdowns */}
+                <MobileDropdown
+                  title="Trade"
+                  items={[
+                    { label: "Spot Trading", href: "#", icon: "blue-400" },
+                    { label: "Margin Trading", href: "#", icon: "purple-400" },
+                    { label: "Futures", href: "#", icon: "green-400" },
+                  ]}
+                />
+
+                <a
+                  href="#"
+                  className="block px-3 py-2 hover:text-white hover:bg-gray-700 rounded-lg transition-all"
+                >
+                  Staking
+                </a>
+
+                <MobileDropdown
+                  title="Institution"
+                  items={[
+                    { label: "Institutional Accounts", href: "#", icon: "indigo-400" },
+                    { label: "API Access", href: "#", icon: "yellow-400" },
+                    { label: "White Label", href: "#", icon: "pink-400" },
+                  ]}
+                />
+
+                <div className="flex space-x-3 pt-3 border-t border-gray-700">
+                  <button className="flex-1 px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Log In
+                  </button>
+                  <button className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </motion.div>
-    </>
-  );
+      </div>
+    </header>
+  )
+}
+
+function MobileDropdown({
+  title,
+  items,
+}: {
+  title: string
+  items: { label: string; href: string; icon?: string }[]
+}) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex justify-between items-center w-full px-3 py-2 rounded-lg hover:text-white hover:bg-gray-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 font-medium"
+        aria-expanded={open}
+        aria-haspopup="true"
+      >
+        <span>{title}</span>
+        <svg
+          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : "rotate-0"}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="pl-4 mt-1 space-y-1">
+          {items.map(({ label, href, icon }) => (
+            <a
+              key={label}
+              href={href}
+              className="flex items-center px-3 py-2 rounded-lg hover:text-white hover:bg-gray-700 transition-all focus:outline-none focus:bg-gray-700"
+            >
+              {icon && (
+                <span
+                  className={`w-2 h-2 rounded-full bg-${icon} mr-2`}
+                  aria-hidden="true"
+                ></span>
+              )}
+              {label}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
