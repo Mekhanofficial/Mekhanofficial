@@ -98,7 +98,7 @@ export default function HeroPage() {
               <span className="md:hidden">Invest Smart, Invest Secure,</span>
               <span className="hidden md:inline">Invest Smart, Invest Secure,</span>
               <br className="md:hidden" />
-              <span className="md:hidden">Invest in CRESCENT...</span>
+              <span className="md:hidden">Invest in CRESCENT..</span>
               <span className="hidden md:inline">Invest in CRESCENT...</span>
             </span>
             <br className="hidden md:block" />
