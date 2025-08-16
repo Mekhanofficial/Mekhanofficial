@@ -108,7 +108,7 @@ export default function HeroPage() {
           </h1>
           
           {/* Subtitle */}
-          <p className="text-lg text-green-100 max-w-2xl mx-auto leading-relaxed mt-6">
+          <p className="text-lg text-green-200 max-w-2xl mx-auto leading-relaxed mt-6">
             Take full control of your digital assets with our non-custodial multi-chain
             solution. Security meets simplicity in one powerful platform.
           </p>
