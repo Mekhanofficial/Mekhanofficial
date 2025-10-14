@@ -52,8 +52,8 @@ const Projects = () => {
         role: "Frontend Developer",
       },
       bgChar: "W",
-      charColor: "text-green-500",
-      accentColor: "bg-green-500/20",
+      charColor: "text-purple-500",
+      accentColor: "bg-purple-500/20",
     },
     {
       image: "/images/bgg3.jpg",
@@ -101,8 +101,8 @@ const Projects = () => {
         role: "Frontend Developer",
       },
       bgChar: "K",
-      charColor: "text-purple-500",
-      accentColor: "bg-purple-500/20",
+      charColor: "text-teal-500",
+      accentColor: "bg-teal-500/20",
     },
   ];
 
