@@ -93,7 +93,7 @@ const Projects = () => {
       title: "Koin Fu",
       description:
         "A crypto trading dashboard for tracking market prices, trading pairs, and portfolio stats.",
-      link: "https://koin-fu.vercel.app", // Replace with live site if available
+      link: "https://koinfu.vercel.app", 
       mockup: "/images/px4.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
