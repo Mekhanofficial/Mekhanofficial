@@ -44,7 +44,7 @@ const Projects = () => {
       title: "MatchFit Wardrobe",
       description:
         "An e-commerce clothing site with gender-based filtering, cart, and wishlist functionality.",
-      link: "https://matchfit.vercel.app", // Replace with live site if available
+      link: "https://matchfit.vercel.app", 
       mockup: "/images/px1.png",
       projectDetails: {
         technologies: "React, Tailwind CSS, JavaScript",
