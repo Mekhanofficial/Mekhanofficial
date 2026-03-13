@@ -62,7 +62,7 @@ npm install
 ```
 
 ### 2. Configure environment
-Create `.env.local` in the project root:
+Create `.env.local`  in the project root:
 
 ```env
 EMAIL_USER=your_gmail_address
