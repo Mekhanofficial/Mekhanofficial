@@ -6,16 +6,20 @@ import {
   SiReact,
   SiNextdotjs,
   SiTailwindcss,
-  SiHtml5,
-  SiCss3,
-  SiBootstrap,
-  SiFirebase,
-  SiVuedotjs,
+  SiTypescript,
+  SiNodedotjs,
+  SiExpress,
+  SiMongodb,
+  SiPostgresql,
+  SiFlutter,
   SiGithub,
   SiLinkedin,
   SiJavascript,
   SiGit,
+  SiVercel,
+  SiRender,
 } from "react-icons/si";
+import { FaHandPointDown } from "react-icons/fa";
 import Image from "next/image";
 
 type SocialLink = {
@@ -28,6 +32,14 @@ type TechItem = {
   icon: React.ReactNode;
   name: string;
 };
+
+const ROLE_ROTATION = [
+  "FULL-STACK ENGINEER",
+  "WEB PLATFORM ARCHITECT",
+  "REACT + NODE SPECIALIST",
+  "API SYSTEMS ENGINEER",
+  "PRODUCT-DRIVEN BUILDER",
+];
 
 export default function Hero() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,25 +54,19 @@ export default function Hero() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const socialLinks: SocialLink[] = [
     {
       icon: <SiGithub className="w-4 h-4" />,
       name: "GitHub",
-      url: "https://github.com",
+      url: "https://github.com/Mekhanofficial",
     },
-    // Add other social links here
+    {
+      icon: <SiLinkedin className="w-4 h-4" />,
+      name: "LinkedIn",
+      url: "https://linkedin.com/in/mekhano",
+    },
   ];
-
-  const roles = [
-    "FRONTEND DEVELOPER",
-    "REACT SPECIALIST",
-    "WEB DEVELOPER",
-    "CODE WHISPERER",
-    "DESIGN-SAVVY CODER",
-  ];
-  
 
   const techStack: TechItem[] = [
     { icon: <SiReact className="w-5 h-5 sm:w-6 sm:h-6" />, name: "React" },
@@ -72,22 +78,48 @@ export default function Hero() {
       icon: <SiJavascript className="w-5 h-5 sm:w-6 sm:h-6" />,
       name: "JavaScript",
     },
-    { icon: <SiHtml5 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "HTML5" },
-    { icon: <SiCss3 className="w-5 h-5 sm:w-6 sm:h-6" />, name: "CSS3" },
+    {
+      icon: <SiTypescript className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "TypeScript",
+    },
     {
       icon: <SiTailwindcss className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Tailwind",
-    },
-    { icon: <SiVuedotjs className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Vue.js" },
-    {
-      icon: <SiBootstrap className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Bootstrap",
+      name: "Tailwind CSS",
     },
     {
-      icon: <SiFirebase className="w-5 h-5 sm:w-6 sm:h-6" />,
-      name: "Firebase",
+      icon: <SiNodedotjs className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Node.js",
+    },
+    {
+      icon: <SiExpress className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Express",
+    },
+    {
+      icon: <SiMongodb className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "MongoDB",
+    },
+    {
+      icon: <SiPostgresql className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "PostgreSQL",
+    },
+    {
+      icon: <SiFlutter className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Flutter",
+    },
+    {
+      icon: <SiReact className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "React Native",
+    },
+    {
+      icon: <SiVercel className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Vercel",
+    },
+    {
+      icon: <SiRender className="w-5 h-5 sm:w-6 sm:h-6" />,
+      name: "Render",
     },
     { icon: <SiGit className="w-5 h-5 sm:w-6 sm:h-6" />, name: "Git" },
+    { icon: <SiGithub className="w-5 h-5 sm:w-6 sm:h-6" />, name: "GitHub" },
     
   ];
 
@@ -115,7 +147,7 @@ export default function Hero() {
     let roleTimeout: NodeJS.Timeout;
 
     const typeRole = () => {
-      const currentRole = roles[currentRoleIndex];
+      const currentRole = ROLE_ROTATION[currentRoleIndex];
 
       typingInterval = setInterval(() => {
         if (charIndex <= currentRole.length) {
@@ -126,7 +158,7 @@ export default function Hero() {
 
           // Wait 2s, then move to next role
           roleTimeout = setTimeout(() => {
-            setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+            setCurrentRoleIndex((prev) => (prev + 1) % ROLE_ROTATION.length);
           }, 2000);
         }
       }, 100);
@@ -240,7 +272,8 @@ export default function Hero() {
     setIsOpen(false);
   }, []);
 
-  const duplicatedTechStack = [...techStack, ...techStack];
+  const topRowStack = [...techStack, ...techStack];
+  const bottomRowStack = [...techStack.slice().reverse(), ...techStack.slice().reverse()];
 
 
   if (!mounted) return null;
@@ -332,10 +365,10 @@ export default function Hero() {
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-2 left-2 sm:top-4 sm:left-4 md:top-6 md:left-6 z-50 p-1 sm:p-2 rounded-full bg-zinc-200/90 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors duration-300"
+                className="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 z-50 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-blue-600 text-white border-2 border-white/90 dark:border-zinc-200/80 shadow-[0_10px_24px_rgba(37,99,235,0.5)] hover:bg-blue-700 active:scale-95 transition-all duration-200 flex items-center justify-center"
                 aria-label="Close"
               >
-                <FiX className="w-4 h-4 sm:w-5 sm:h-5" />
+                <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
 
               {/* About Me Content */}
@@ -344,15 +377,15 @@ export default function Hero() {
                   About Me
                 </h1>
                 <h2 className="text-lg sm:text-xl md:text-2xl font-medium text-blue-600 dark:text-blue-400">
-                  Interactive Front-end Developer
+                  Full-Stack Web & Mobile Developer
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg text-zinc-700 dark:text-zinc-300">
-                  I&apos;m Melvin Okievor, a freelance front-end developer
-                  passionate about crafting clean, responsive interfaces and
-                  building intuitive, high-performing web applications. I enjoy
-                  solving design challenges and turning ideas into engaging
-                  digital experiences through modern development practices.
+                  I&apos;m Melvin Okievor, a full-stack developer building web
+                  and mobile products end-to-end. I work across React, Next.js,
+                  React Native, Flutter, Node.js, Express, MongoDB, and
+                  PostgreSQL to deliver scalable apps with strong backend
+                  architecture and clean user experiences.
                 </p>
 
                 {/* Tech Stack */}
@@ -368,7 +401,7 @@ export default function Hero() {
                         animation: "scrollRight 20s linear infinite",
                       }}
                     >
-                      {duplicatedTechStack.map((tech, index) => (
+                      {topRowStack.map((tech, index) => (
                         <div
                           key={`top-${index}`}
                           className="flex-shrink-0 mx-1 sm:mx-2 flex items-center gap-1 sm:gap-2 p-1 sm:p-2 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-lg group-hover:bg-zinc-300/50 dark:group-hover:bg-zinc-700/50 transition-colors duration-200 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-blue-500/20"
@@ -390,7 +423,7 @@ export default function Hero() {
                         animation: "scrollLeft 20s linear infinite",
                       }}
                     >
-                      {duplicatedTechStack.map((tech, index) => (
+                      {bottomRowStack.map((tech, index) => (
                         <div
                           key={`bottom-${index}`}
                           className="flex-shrink-0 mx-1 sm:mx-2 flex items-center gap-1 sm:gap-2 p-1 sm:p-2 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-lg group-hover:bg-zinc-300/50 dark:group-hover:bg-zinc-700/50 transition-colors duration-200 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-blue-500/20"
@@ -404,6 +437,7 @@ export default function Hero() {
                         </div>
                       ))}
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -429,19 +463,24 @@ export default function Hero() {
         </div>
 
         {/* Reveal Button */}
-        <button
-          ref={buttonRef}
-          onClick={handleButtonClick}
-          className={`absolute bottom-8 left-1/2 -translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center z-40 transition-all duration-500 hover:scale-110 shadow-lg ${
+        <div
+          className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2 transition-all duration-500 ${
             isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
-          aria-label="Reveal content"
         >
           <div className="relative">
-            <FiChevronDown className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 animate-bounce" />
-            <div className="absolute inset-0 rounded-full bg-blue-400/30 animate-ping opacity-0 hover:opacity-100 transition-opacity duration-300" />
+            <FaHandPointDown className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 w-6 h-6 text-blue-600 dark:text-blue-300 animate-bounce drop-shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
+            <button
+              onClick={handleButtonClick}
+              className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center transition-all duration-500 hover:scale-110 shadow-[0_0_30px_rgba(59,130,246,0.55)]"
+              aria-label="Click to open profile details"
+            >
+              <span className="absolute inset-0 rounded-full bg-blue-300/30 blur-sm animate-pulse" />
+              <span className="absolute -inset-3 rounded-full border border-blue-300/50 animate-ping" />
+              <FiChevronDown className="relative w-6 h-6 sm:w-7 sm:h-7 animate-bounce" />
+            </button>
           </div>
-        </button>
+        </div>
       </div>
 
       {/* Animation keyframes */}
