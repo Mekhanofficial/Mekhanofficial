@@ -372,7 +372,7 @@ export default function Hero() {
               </button>
 
               {/* About Me Content */}
-              <div className="order-2 lg:order-1 space-y-3 sm:space-y-4 md:space-y-6">
+              <div className="order-2 lg:order-1 mt-5 sm:mt-6 lg:mt-0 space-y-3 sm:space-y-4 md:space-y-6">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   About Me
                 </h1>

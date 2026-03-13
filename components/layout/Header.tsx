@@ -173,105 +173,101 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute right-0 mt-2 w-80 bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-4 border border-zinc-200 dark:border-zinc-700"
+                      className="absolute right-0 mt-3 w-[19.5rem] sm:w-[21rem] max-h-[calc(100vh-5.5rem)] overflow-hidden rounded-2xl border border-sky-200/70 dark:border-zinc-700/80 bg-white/95 dark:bg-zinc-900/95 shadow-[0_28px_80px_-30px_rgba(14,116,144,0.55)] backdrop-blur-xl"
                     >
-                      <h3 className="font-medium text-lg mb-3 text-zinc-800 dark:text-zinc-100">
-                        Get in touch
-                      </h3>
+                      <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl" />
+                      <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-blue-500/20 blur-3xl" />
 
-                      {formStatus === "success" ? (
-                        <div className="p-3 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">
-                          Message sent successfully!
+                      <div className="relative max-h-[calc(100vh-5.5rem)] overflow-y-auto p-4 sm:p-5">
+                        <div className="mb-4">
+                          <h3 className="font-semibold text-xl text-zinc-900 dark:text-zinc-100">
+                            Let&apos;s Build Something
+                          </h3>
+                          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                            Send a message and I&apos;ll reply as soon as I can.
+                          </p>
                         </div>
-                      ) : formStatus === "error" ? (
-                        <div className="p-3 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded">
-                          Error sending message. Please try again.
-                        </div>
-                      ) : (
-                        <form onSubmit={handleSubmit}>
-                          <div className="mb-3">
-                            <label
-                              htmlFor="name"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                            >
-                              Name
-                            </label>
-                            <input
-                              type="text"
-                              id="name"
-                              name="name"
-                              value={formData.name}
-                              onChange={handleInputChange}
-                              required
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
+
+                        {formStatus === "success" ? (
+                          <div className="p-3 rounded-xl bg-emerald-100/90 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-300/70 dark:border-emerald-700/60">
+                            Message sent successfully!
                           </div>
-
-                          <div className="mb-3">
-                            <label
-                              htmlFor="email"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                            >
-                              Email
-                            </label>
-                            <input
-                              type="email"
-                              id="email"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              required
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
+                        ) : formStatus === "error" ? (
+                          <div className="p-3 rounded-xl bg-red-100/90 dark:bg-red-900/40 text-red-800 dark:text-red-200 border border-red-300/70 dark:border-red-700/60">
+                            Error sending message. Please try again.
                           </div>
+                        ) : (
+                          <form onSubmit={handleSubmit} className="space-y-3">
+                            <div>
+                              <label
+                                htmlFor="name"
+                                className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                              >
+                                Name
+                              </label>
+                              <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors"
+                              />
+                            </div>
 
-                          <div className="mb-4">
-                            <label
-                              htmlFor="message"
-                              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+                            <div>
+                              <label
+                                htmlFor="email"
+                                className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                              >
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors"
+                              />
+                            </div>
+
+                            <div>
+                              <label
+                                htmlFor="message"
+                                className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                              >
+                                Message
+                              </label>
+                              <textarea
+                                id="message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                required
+                                rows={3}
+                                className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors resize-none"
+                              />
+                            </div>
+
+                            <button
+                              type="submit"
+                              disabled={formStatus === "submitting"}
+                              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-4 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_10px_24px_-12px_rgba(37,99,235,0.9)]"
                             >
-                              Message
-                            </label>
-                            <textarea
-                              id="message"
-                              name="message"
-                              value={formData.message}
-                              onChange={handleInputChange}
-                              required
-                              rows={3}
-                              className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                            />
-                          </div>
+                              {formStatus === "submitting"
+                                ? "Sending..."
+                                : "Send Message"}
+                            </button>
+                          </form>
+                        )}
 
-                          <button
-                            type="submit"
-                            disabled={formStatus === "submitting"}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {formStatus === "submitting"
-                              ? "Sending..."
-                              : "Send Message"}
-                          </button>
-                        </form>
-                      )}
-
-                      <div className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-700">
-                        <h4 className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-2">
-                          Or contact directly:
-                        </h4>
-                        <div className="flex flex-col gap-1">
-                          <a
-                            href="mailto:melvinokievor@gmail.com"
-                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                          >
-                            melvinokievor@gmail.com{" "}
-                          </a>
-                          <a
-                            href="tel: +2349060816260"
-                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                          >
-                            +234 (906) 081-6260
-                          </a>
+                        <div className="mt-5 pt-4 border-t border-zinc-200/80 dark:border-zinc-700/70">
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
+                            Messages are delivered directly to my inbox.
+                          </p>
                         </div>
                       </div>
                     </motion.div>
@@ -323,30 +319,39 @@ export default function Header() {
             {/* Light Bulb Pendulum */}
             <button
               onClick={handleThemeToggle}
-              className="relative h-[180px] -mt-2 flex flex-col items-center group"
+              className="relative h-[180px] w-10 -mt-2 flex items-start justify-center group"
               aria-label="Toggle theme"
             >
-              {/* Extended Rope */}
-              <div className="absolute top-0 w-px h-full bg-gradient-to-b from-blue-600 to-blue-500 animate-swing origin-top" />
-
-              {/* Light Bulb */}
               <motion.div
-                className="absolute bottom-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-md bg-amber-50 dark:bg-zinc-800 animate-swing-child"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                className="relative h-full w-full origin-top will-change-transform"
+                animate={{ rotate: [-7, 7, -7] }}
+                transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-5 w-5 transition-all duration-300 ${
-                    theme === "light"
-                      ? "text-blue-500 rotate-180"
-                      : "text-zinc-500 rotate-180 opacity-80"
-                  }`}
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
-                </svg>
+                {/* Extended Rope */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-[calc(100%-1.5rem)] bg-gradient-to-b from-blue-600 to-blue-500/60" />
+
+                {/* Light Bulb */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+                  <motion.div
+                    className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm group-hover:shadow-md bg-amber-50 dark:bg-zinc-800"
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.92 }}
+                    transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-5 w-5 transition-all duration-300 ${
+                        theme === "light"
+                          ? "text-blue-500 rotate-180"
+                          : "text-zinc-500 rotate-180 opacity-80"
+                      }`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
+                    </svg>
+                  </motion.div>
+                </div>
               </motion.div>
             </button>
           </div>
@@ -361,101 +366,102 @@ export default function Header() {
           x: mobileMenuOpen ? 0 : "100%",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed inset-0 z-40 bg-zinc-100/95 dark:bg-zinc-950/95 backdrop-blur-lg pt-20 px-6 ${
+        className={`fixed inset-0 z-40 bg-zinc-100/95 dark:bg-zinc-950/95 backdrop-blur-lg pt-20 px-6 overflow-y-auto ${
           mobileMenuOpen ? "block" : "hidden"
         }`}
       >
-        <div className="flex flex-col items-center gap-8">
-          <div className="w-full max-w-md">
-            <h3 className="text-xl font-medium mb-4 text-center text-zinc-800 dark:text-zinc-200">
-              Contact Me
+        <div className="relative flex flex-col items-center pb-10">
+          <div className="pointer-events-none absolute top-8 -right-10 h-40 w-40 rounded-full bg-cyan-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute bottom-0 -left-12 h-44 w-44 rounded-full bg-blue-500/20 blur-3xl" />
+
+          <div className="relative w-full max-w-md rounded-2xl border border-sky-200/70 dark:border-zinc-700/80 bg-white/95 dark:bg-zinc-900/95 shadow-[0_28px_80px_-30px_rgba(14,116,144,0.55)] backdrop-blur-xl p-5">
+            <h3 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100">
+              Let&apos;s Build Something
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="mobile-name"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="mobile-name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
-              </div>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 mb-4">
+              Drop your message and I&apos;ll get back to you.
+            </p>
 
-              <div>
-                <label
-                  htmlFor="mobile-email"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="mobile-email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
+            {formStatus === "success" ? (
+              <div className="p-3 rounded-xl bg-emerald-100/90 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 border border-emerald-300/70 dark:border-emerald-700/60">
+                Message sent successfully!
               </div>
-
-              <div>
-                <label
-                  htmlFor="mobile-message"
-                  className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="mobile-message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-700 dark:text-white"
-                />
+            ) : formStatus === "error" ? (
+              <div className="p-3 rounded-xl bg-red-100/90 dark:bg-red-900/40 text-red-800 dark:text-red-200 border border-red-300/70 dark:border-red-700/60">
+                Error sending message. Please try again.
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div>
+                  <label
+                    htmlFor="mobile-name"
+                    className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="mobile-name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors"
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={formStatus === "submitting"}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {formStatus === "submitting" ? "Sending..." : "Send Message"}
-              </button>
-            </form>
+                <div>
+                  <label
+                    htmlFor="mobile-email"
+                    className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="mobile-email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors"
+                  />
+                </div>
 
-            <div className="mt-6 pt-6 border-t border-zinc-300 dark:border-zinc-700">
-              <h4 className="text-sm font-medium text-zinc-600 dark:text-zinc-400 mb-3 text-center">
-                Direct Contact
-              </h4>
-              <div className="flex flex-col items-center gap-2">
-                <a
-                  href="mailto:hello@example.com"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                <div>
+                  <label
+                    htmlFor="mobile-message"
+                    className="block text-[11px] font-semibold tracking-wider uppercase text-zinc-600 dark:text-zinc-400 mb-1.5"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="mobile-message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    rows={3}
+                    className="w-full px-3 py-2.5 text-sm rounded-xl border border-zinc-300/80 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-950/70 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/70 focus:border-blue-500 transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={formStatus === "submitting"}
+                  className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 px-4 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_10px_24px_-12px_rgba(37,99,235,0.9)]"
                 >
-                   melvinokievor@gmail.com
-                </a>
-                <a
-                  href="tel:+2349060816260"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  +234 (906) 081-6260
-                </a>
-              </div>
+                  {formStatus === "submitting" ? "Sending..." : "Send Message"}
+                </button>
+              </form>
+            )}
+
+            <div className="mt-5 pt-4 border-t border-zinc-200/80 dark:border-zinc-700/70">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
+                Messages are delivered directly to my inbox.
+              </p>
             </div>
           </div>
-
-          
         </div>
       </motion.div>
     </>
