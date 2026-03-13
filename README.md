@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mekhanofficial Portfolio
+
+Modern portfolio website for **Melvin Okievor** built with Next.js, featuring:
+- interactive hero section
+- project showcase with rich animations
+- theme toggle (light/dark)
+- contact form with email delivery
+- responsive desktop/mobile experience
+
+## Live Profile
+- GitHub: https://github.com/Mekhanofficial
+- LinkedIn: https://linkedin.com/in/mekhano
+- Email: melvinokievor@gmail.com
+
+## Tech Stack
+- Next.js 15
+- React 18
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Next Themes
+- Nodemailer
+
+## Project Highlights
+- **Hero Section**  
+  Dynamic intro animation, sound interaction, stack carousel, and reveal UX.
+- **Projects Section**  
+  Full-width project blocks with alternating layout, hover effects, tech chips, and live/code links.
+- **Contact Flow**  
+  Header contact form posts to API route and sends mail via Gmail SMTP (Nodemailer).
+
+## Folder Structure
+```text
+app/
+  layout.tsx
+  page.tsx
+  api/SendEmail.ts
+
+components/
+  layout/
+    Header.tsx
+    Footer.tsx
+    Layout.tsx
+  sections/
+    Hero.tsx
+    Projects.tsx
+    projectData/
+      index.ts
+      types.ts
+      ledgerly/project.ts
+      coinquest/project.ts
+      matchfit/project.ts
+      themealsgraffiti/project.ts
+      another/project.ts
+```
 
 ## Getting Started
 
-First, run the development server:
-
+### 1. Install dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure environment
+Create `.env.local` in the project root:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+EMAIL_USER=your_gmail_address
+EMAIL_PASS=your_app_password
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Notes:
+- Use a Gmail App Password (not your regular account password).
+- `EMAIL_USER` is used as both sender and receiver in current implementation.
 
-## Learn More
+### 3. Run development server
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open http://localhost:3000
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available Scripts
+- `npm run dev` - start local dev server (Turbopack)
+- `npm run build` - production build
+- `npm run start` - run production server
+- `npm run lint` - lint code with Next.js ESLint config
+- `npm run start:json-server` - optional mock server on port 4000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
+The project is ready for Vercel deployment:
+1. Push to GitHub
+2. Import repository in Vercel
+3. Add environment variables (`EMAIL_USER`, `EMAIL_PASS`)
+4. Deploy
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contact
+For collaborations or freelance work:
+- Email: melvinokievor@gmail.com
+- LinkedIn: https://linkedin.com/in/mekhano
+- GitHub: https://github.com/Mekhanofficial
